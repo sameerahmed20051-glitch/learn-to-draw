@@ -26,7 +26,9 @@ export function DrawingPad() {
   const [size, setSize] = useState(6);
   const [tool, setTool] = useState<Tool>("pen");
 
-  // Setup canvas with white background and high-DPI scaling
+  // Setup canvas with white background and high-DPI scaling.
+  // We snapshot pixels before resizing and redraw them after, so a window
+  // resize never wipes the child's drawing.
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
@@ -34,29 +36,34 @@ export function DrawingPad() {
 
     const resize = () => {
       const rect = container.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
       const dpr = window.devicePixelRatio || 1;
-      // Save current image
-      const ctx = canvas.getContext("2d");
-      const prev = ctx ? ctx.getImageData(0, 0, canvas.width, canvas.height) : null;
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+
+      // Snapshot current pixels (if any) to a temp canvas so we can redraw
+      // them after resizing. getImageData/putImageData would distort on size
+      // change, so we use drawImage to scale the snapshot to the new size.
+      let snapshot: HTMLCanvasElement | null = null;
+      if (canvas.width > 0 && canvas.height > 0) {
+        snapshot = document.createElement("canvas");
+        snapshot.width = canvas.width;
+        snapshot.height = canvas.height;
+        snapshot.getContext("2d")!.drawImage(canvas, 0, 0);
+      }
+
+      canvas.width = Math.floor(rect.width * dpr);
+      canvas.height = Math.floor(rect.height * dpr);
       canvas.style.width = `${rect.width}px`;
       canvas.style.height = `${rect.height}px`;
-      const newCtx = canvas.getContext("2d")!;
-      newCtx.scale(dpr, dpr);
-      newCtx.fillStyle = "#ffffff";
-      newCtx.fillRect(0, 0, rect.width, rect.height);
-      newCtx.lineCap = "round";
-      newCtx.lineJoin = "round";
-      if (prev) {
-        // best-effort restore (may stretch)
-        try {
-          createImageBitmap(prev).then((bmp) => newCtx.drawImage(bmp, 0, 0, rect.width, rect.height));
-        } catch {
-          /* ignore */
-        }
+      const ctx = canvas.getContext("2d")!;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      if (snapshot) {
+        ctx.drawImage(snapshot, 0, 0, canvas.width, canvas.height);
       }
-      historyRef.current = [];
+      ctx.scale(dpr, dpr);
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
     };
     resize();
     const ro = new ResizeObserver(resize);
