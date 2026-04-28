@@ -144,31 +144,45 @@ export function DrawingPad() {
   return (
     <div className="flex h-full flex-col gap-3">
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-card p-3 shadow-sm border">
-        <Button
-          variant={tool === "pen" ? "default" : "outline"}
-          size="lg"
-          onClick={() => setTool("pen")}
-          className="rounded-full"
-        >
-          <Pencil className="mr-1 h-5 w-5" /> Pen
-        </Button>
-        <Button
-          variant={tool === "eraser" ? "default" : "outline"}
-          size="lg"
-          onClick={() => setTool("eraser")}
-          className="rounded-full"
-        >
-          <Eraser className="mr-1 h-5 w-5" /> Eraser
-        </Button>
-        <Button variant="outline" size="lg" onClick={undo} className="rounded-full">
-          <Undo2 className="mr-1 h-5 w-5" /> Undo
-        </Button>
-        <Button variant="outline" size="lg" onClick={clearAll} className="rounded-full">
-          <Trash2 className="mr-1 h-5 w-5" /> Clear
-        </Button>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl bg-card p-3 shadow-sm border">
+        <div className="flex items-center gap-1.5">
+          <Button
+            variant={tool === "pen" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setTool("pen")}
+            className="rounded-full h-10 px-3"
+          >
+            <Pencil className="mr-1 h-4 w-4" /> Pen
+          </Button>
+          <Button
+            variant={tool === "eraser" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setTool("eraser")}
+            className="rounded-full h-10 px-3"
+          >
+            <Eraser className="mr-1 h-4 w-4" /> Eraser
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={undo}
+            className="rounded-full h-10 px-3"
+            aria-label="Undo"
+          >
+            <Undo2 className="mr-1 h-4 w-4" /> Undo
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={clearAll}
+            className="rounded-full h-10 px-3"
+            aria-label="Clear"
+          >
+            <Trash2 className="mr-1 h-4 w-4" /> Clear
+          </Button>
+        </div>
 
-        <div className="ml-2 flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5">
           {COLORS.map((c) => (
             <button
               key={c}
@@ -177,23 +191,25 @@ export function DrawingPad() {
                 setTool("pen");
               }}
               aria-label={`Color ${c}`}
-              className={`h-8 w-8 rounded-full border-2 transition-transform hover:scale-110 ${
-                color === c && tool === "pen" ? "ring-2 ring-offset-2 ring-foreground scale-110" : "border-white"
+              className={`h-7 w-7 rounded-full border-2 transition-transform hover:scale-110 ${
+                color === c && tool === "pen"
+                  ? "ring-2 ring-offset-2 ring-foreground scale-110"
+                  : "border-white"
               }`}
               style={{ backgroundColor: c }}
             />
           ))}
         </div>
 
-        <div className="ml-2 flex items-center gap-2">
-          <span className="text-sm font-semibold text-muted-foreground">Size</span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-muted-foreground">Size</span>
           <input
             type="range"
             min={2}
             max={24}
             value={size}
             onChange={(e) => setSize(parseInt(e.target.value))}
-            className="w-24 accent-primary"
+            className="w-20 accent-primary"
           />
         </div>
       </div>
