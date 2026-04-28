@@ -26,7 +26,9 @@ export function DrawingPad() {
   const [size, setSize] = useState(6);
   const [tool, setTool] = useState<Tool>("pen");
 
-  // Setup canvas with white background and high-DPI scaling
+  // Setup canvas with white background and high-DPI scaling.
+  // We snapshot pixels before resizing and redraw them after, so a window
+  // resize never wipes the child's drawing.
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
@@ -34,29 +36,34 @@ export function DrawingPad() {
 
     const resize = () => {
       const rect = container.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
       const dpr = window.devicePixelRatio || 1;
-      // Save current image
-      const ctx = canvas.getContext("2d");
-      const prev = ctx ? ctx.getImageData(0, 0, canvas.width, canvas.height) : null;
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+
+      // Snapshot current pixels (if any) to a temp canvas so we can redraw
+      // them after resizing. getImageData/putImageData would distort on size
+      // change, so we use drawImage to scale the snapshot to the new size.
+      let snapshot: HTMLCanvasElement | null = null;
+      if (canvas.width > 0 && canvas.height > 0) {
+        snapshot = document.createElement("canvas");
+        snapshot.width = canvas.width;
+        snapshot.height = canvas.height;
+        snapshot.getContext("2d")!.drawImage(canvas, 0, 0);
+      }
+
+      canvas.width = Math.floor(rect.width * dpr);
+      canvas.height = Math.floor(rect.height * dpr);
       canvas.style.width = `${rect.width}px`;
       canvas.style.height = `${rect.height}px`;
-      const newCtx = canvas.getContext("2d")!;
-      newCtx.scale(dpr, dpr);
-      newCtx.fillStyle = "#ffffff";
-      newCtx.fillRect(0, 0, rect.width, rect.height);
-      newCtx.lineCap = "round";
-      newCtx.lineJoin = "round";
-      if (prev) {
-        // best-effort restore (may stretch)
-        try {
-          createImageBitmap(prev).then((bmp) => newCtx.drawImage(bmp, 0, 0, rect.width, rect.height));
-        } catch {
-          /* ignore */
-        }
+      const ctx = canvas.getContext("2d")!;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      if (snapshot) {
+        ctx.drawImage(snapshot, 0, 0, canvas.width, canvas.height);
       }
-      historyRef.current = [];
+      ctx.scale(dpr, dpr);
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
     };
     resize();
     const ro = new ResizeObserver(resize);
@@ -137,31 +144,45 @@ export function DrawingPad() {
   return (
     <div className="flex h-full flex-col gap-3">
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-card p-3 shadow-sm border">
-        <Button
-          variant={tool === "pen" ? "default" : "outline"}
-          size="lg"
-          onClick={() => setTool("pen")}
-          className="rounded-full"
-        >
-          <Pencil className="mr-1 h-5 w-5" /> Pen
-        </Button>
-        <Button
-          variant={tool === "eraser" ? "default" : "outline"}
-          size="lg"
-          onClick={() => setTool("eraser")}
-          className="rounded-full"
-        >
-          <Eraser className="mr-1 h-5 w-5" /> Eraser
-        </Button>
-        <Button variant="outline" size="lg" onClick={undo} className="rounded-full">
-          <Undo2 className="mr-1 h-5 w-5" /> Undo
-        </Button>
-        <Button variant="outline" size="lg" onClick={clearAll} className="rounded-full">
-          <Trash2 className="mr-1 h-5 w-5" /> Clear
-        </Button>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl bg-card p-3 shadow-sm border">
+        <div className="flex items-center gap-1.5">
+          <Button
+            variant={tool === "pen" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setTool("pen")}
+            className="rounded-full h-10 px-3"
+          >
+            <Pencil className="mr-1 h-4 w-4" /> Pen
+          </Button>
+          <Button
+            variant={tool === "eraser" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setTool("eraser")}
+            className="rounded-full h-10 px-3"
+          >
+            <Eraser className="mr-1 h-4 w-4" /> Eraser
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={undo}
+            className="rounded-full h-10 px-3"
+            aria-label="Undo"
+          >
+            <Undo2 className="mr-1 h-4 w-4" /> Undo
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={clearAll}
+            className="rounded-full h-10 px-3"
+            aria-label="Clear"
+          >
+            <Trash2 className="mr-1 h-4 w-4" /> Clear
+          </Button>
+        </div>
 
-        <div className="ml-2 flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5">
           {COLORS.map((c) => (
             <button
               key={c}
@@ -170,23 +191,25 @@ export function DrawingPad() {
                 setTool("pen");
               }}
               aria-label={`Color ${c}`}
-              className={`h-8 w-8 rounded-full border-2 transition-transform hover:scale-110 ${
-                color === c && tool === "pen" ? "ring-2 ring-offset-2 ring-foreground scale-110" : "border-white"
+              className={`h-7 w-7 rounded-full border-2 transition-transform hover:scale-110 ${
+                color === c && tool === "pen"
+                  ? "ring-2 ring-offset-2 ring-foreground scale-110"
+                  : "border-white"
               }`}
               style={{ backgroundColor: c }}
             />
           ))}
         </div>
 
-        <div className="ml-2 flex items-center gap-2">
-          <span className="text-sm font-semibold text-muted-foreground">Size</span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-muted-foreground">Size</span>
           <input
             type="range"
             min={2}
             max={24}
             value={size}
             onChange={(e) => setSize(parseInt(e.target.value))}
-            className="w-24 accent-primary"
+            className="w-20 accent-primary"
           />
         </div>
       </div>
