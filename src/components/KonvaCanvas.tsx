@@ -229,6 +229,8 @@ export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCa
                 perfectDrawEnabled={false}
                 shadowForStrokeEnabled={false}
                 hitStrokeWidth={0}
+                listening={false}
+                transformsEnabled="position"
                 globalCompositeOperation={
                   s.tool === "eraser" ? "destination-out" : "source-over"
                 }
