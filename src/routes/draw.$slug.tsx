@@ -281,6 +281,7 @@ function DrawPage() {
               key={l.slug}
               to="/draw/$slug"
               params={{ slug: l.slug }}
+              preload="intent"
               className="inline-flex items-center gap-1.5 rounded-full bg-secondary/50 hover:bg-secondary border border-[var(--galaxy-teal)]/20 px-3 py-1 text-sm font-semibold whitespace-nowrap transition-all hover:galaxy-glow"
             >
               <span>{l.emoji}</span>

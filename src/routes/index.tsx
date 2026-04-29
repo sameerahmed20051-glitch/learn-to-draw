@@ -52,6 +52,7 @@ function HomePage() {
               key={l.slug}
               to="/draw/$slug"
               params={{ slug: l.slug }}
+              preload="intent"
               style={{ animationDelay: `${index * 50}ms` }}
               className="group animate-in fade-in slide-in-from-bottom-4 duration-500 fill-mode-both relative flex flex-col rounded-3xl lesson-card p-4 transition-all hover:-translate-y-2 hover:galaxy-glow focus:outline-none focus:ring-2 focus:ring-primary"
             >
