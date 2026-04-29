@@ -37,42 +37,49 @@ export const lessons: Lesson[] = [
     accentTo: "to-[oklch(0.7_0.18_320)]",
     steps: [
       {
-        title: "Step 1 — Big Body",
-        instruction: "Draw a big oval in the middle of the page. This is the elephant's body.",
-        tip: "Make it as wide as your hand!",
-        layer: `<ellipse cx="110" cy="115" rx="55" ry="40" ${S}/>`,
+        title: "Step 1 — Round Head",
+        instruction: "Draw a big round circle on the upper-left side of the page. This is the elephant's head.",
+        tip: "Make it the size of a tennis ball!",
+        layer: `<circle cx="70" cy="80" r="32" ${S}/>`,
       },
       {
-        title: "Step 2 — Round Head",
-        instruction: "Add a smaller circle on the left side of the body for the head.",
-        layer: `<circle cx="55" cy="95" r="28" ${S}/>`,
+        title: "Step 2 — Long Curly Trunk",
+        instruction: "From the bottom of the head, draw a long trunk that curves down and curls up at the end like the letter J.",
+        tip: "Curl the tip up like a smile!",
+        layer: `<path d="M55 105 Q 45 135, 55 158 Q 65 175, 82 168 Q 92 162, 88 152" ${S}/>
+                <path d="M88 152 Q 84 148, 80 152" ${S}/>`,
       },
       {
-        title: "Step 3 — Long Trunk",
-        instruction: "From the head, draw a long curvy trunk that curls up at the end.",
-        tip: "Curl it up like a smile!",
-        layer: `<path d="M40 110 Q 25 140, 35 165 Q 45 180, 60 170" ${S}/>`,
+        title: "Step 3 — Big Floppy Ear",
+        instruction: "Draw one giant floppy ear behind the head. It should be bigger than the head!",
+        tip: "Like a huge leaf flapping in the wind.",
+        layer: `<path d="M75 52 Q 35 45, 32 88 Q 38 110, 65 105 Q 72 102, 75 95" ${S}/>`,
       },
       {
-        title: "Step 4 — Floppy Ear",
-        instruction: "Draw one big floppy ear behind the head, like a giant leaf.",
-        layer: `<path d="M55 70 Q 30 60, 35 95 Q 45 110, 60 100 Z" ${S}/>`,
+        title: "Step 4 — Big Round Body",
+        instruction: "Connect a big oval body to the right side of the head, going down and across the page.",
+        tip: "Make it nice and round and big!",
+        layer: `<path d="M98 78 Q 175 68, 178 130 Q 175 158, 100 158 Q 92 145, 95 105" ${S}/>`,
       },
       {
-        title: "Step 5 — Four Legs",
-        instruction: "Add four chunky legs under the body, like little tree trunks.",
-        layer: `<path d="M75 150 V 180 H 90 V 150" ${S}/>
-                <path d="M105 152 V 180 H 120 V 152" ${S}/>
-                <path d="M135 152 V 180 H 150 V 152" ${S}/>
-                <path d="M155 148 V 180 H 168 V 148" ${S}/>`,
+        title: "Step 5 — Four Tree-Trunk Legs",
+        instruction: "Draw four chunky rectangle legs under the body, with little toenail bumps at the bottom.",
+        tip: "Legs are short and thick like tree trunks.",
+        layer: `<path d="M105 158 V 188 Q 105 192, 110 192 H 122 Q 127 192, 127 188 V 158" ${S}/>
+                <path d="M150 158 V 188 Q 150 192, 155 192 H 167 Q 172 192, 172 188 V 158" ${S}/>
+                <path d="M112 192 q 3 -3 6 0 m 3 0 q 3 -3 6 0" ${S}/>
+                <path d="M157 192 q 3 -3 6 0 m 3 0 q 3 -3 6 0" ${S}/>`,
       },
       {
-        title: "Step 6 — Eye & Tail",
-        instruction: "Add a tiny eye, a smile, and a thin tail with a little tuft at the end.",
-        tip: "Now color it gray and you're done!",
-        layer: `<circle cx="50" cy="90" r="2" fill="currentColor"/>
-                <path d="M165 120 Q 180 130, 178 145" ${S}/>
-                <path d="M178 145 l -3 6 M178 145 l 4 4" ${S}/>`,
+        title: "Step 6 — Eye, Smile & Tail",
+        instruction: "Add a happy eye, a tiny smile under the eye, a toenail line on the trunk, and a thin tail with a fluffy tuft at the end.",
+        tip: "Now color your elephant gray with a pink ear inside!",
+        layer: `<circle cx="68" cy="78" r="3" fill="currentColor"/>
+                <circle cx="69" cy="77" r="1" fill="white"/>
+                <path d="M75 88 q 5 4 10 0" ${S}/>
+                <path d="M82 165 q 4 -2 6 -5" ${S}/>
+                <path d="M178 130 q 12 8 10 28" ${S}/>
+                <path d="M188 158 l -3 6 M188 158 l 3 6 M188 158 l 0 7" ${S}/>`,
       },
     ],
   },
@@ -87,40 +94,54 @@ export const lessons: Lesson[] = [
     steps: [
       {
         title: "Step 1 — Round Head",
-        instruction: "Draw a big round circle in the middle of your page for the cat's head.",
-        layer: `<circle cx="100" cy="100" r="55" ${S}/>`,
+        instruction: "Draw a big round circle in the middle-top of your page for the cat's head.",
+        tip: "Make it nice and round like an apple!",
+        layer: `<circle cx="100" cy="80" r="40" ${S}/>`,
       },
       {
-        title: "Step 2 — Pointy Ears",
-        instruction: "Add two triangle ears on top of the head.",
-        layer: `<path d="M55 65 L 65 25 L 90 55" ${S}/>
-                <path d="M145 65 L 135 25 L 110 55" ${S}/>`,
+        title: "Step 2 — Pointy Triangle Ears",
+        instruction: "Add two triangle ears on top of the head with little lines inside.",
+        tip: "Like two slices of pizza pointing up!",
+        layer: `<path d="M68 60 L 62 25 L 92 50 Z" ${S}/>
+                <path d="M132 60 L 138 25 L 108 50 Z" ${S}/>
+                <path d="M70 50 L 75 35" ${S}/>
+                <path d="M130 50 L 125 35" ${S}/>`,
       },
       {
-        title: "Step 3 — Sweet Eyes & Nose",
-        instruction: "Draw two oval eyes and a tiny triangle nose in the middle.",
-        layer: `<ellipse cx="80" cy="95" rx="6" ry="9" fill="currentColor"/>
-                <ellipse cx="120" cy="95" rx="6" ry="9" fill="currentColor"/>
-                <path d="M95 115 L 105 115 L 100 122 Z" fill="currentColor"/>`,
+        title: "Step 3 — Big Eyes & Nose",
+        instruction: "Draw two big round eyes with little dots inside, and a tiny triangle nose between them.",
+        tip: "Add a small white sparkle on each eye!",
+        layer: `<circle cx="82" cy="78" r="7" ${S}/>
+                <circle cx="118" cy="78" r="7" ${S}/>
+                <ellipse cx="82" cy="79" rx="3" ry="5" fill="currentColor"/>
+                <ellipse cx="118" cy="79" rx="3" ry="5" fill="currentColor"/>
+                <circle cx="80" cy="76" r="1.2" fill="white"/>
+                <circle cx="116" cy="76" r="1.2" fill="white"/>
+                <path d="M95 92 L 105 92 L 100 99 Z" fill="currentColor"/>`,
       },
       {
-        title: "Step 4 — Mouth & Whiskers",
-        instruction: "Add a little smiley mouth and three whiskers on each side.",
-        layer: `<path d="M100 122 Q 92 132, 86 128 M100 122 Q 108 132, 114 128" ${S}/>
-                <path d="M55 110 H 30 M55 120 H 32 M58 130 H 35" ${S}/>
-                <path d="M145 110 H 170 M145 120 H 168 M142 130 H 165" ${S}/>`,
+        title: "Step 4 — Smile & Whiskers",
+        instruction: "Draw a cute W mouth under the nose and three whiskers on each side.",
+        tip: "Whiskers help cats feel their way!",
+        layer: `<path d="M100 99 Q 95 108, 90 104 M100 99 Q 105 108, 110 104" ${S}/>
+                <path d="M65 90 H 40 M65 98 H 42 M67 106 H 45" ${S}/>
+                <path d="M135 90 H 160 M135 98 H 158 M133 106 H 155" ${S}/>`,
       },
       {
-        title: "Step 5 — Body & Legs",
-        instruction: "Draw a soft oval body below the head with two front paws.",
-        layer: `<path d="M60 150 Q 100 200, 140 150" ${S}/>
-                <path d="M85 175 V 188 M115 175 V 188" ${S}/>`,
+        title: "Step 5 — Soft Body & Paws",
+        instruction: "Draw a U-shape under the head for the body, with two front paws sticking out at the bottom.",
+        tip: "Cats sit up nice and tall!",
+        layer: `<path d="M70 115 Q 60 165, 75 180 H 125 Q 140 165, 130 115" ${S}/>
+                <path d="M82 180 q 4 -3 8 0 q 4 -3 8 0" ${S}/>
+                <path d="M102 180 q 4 -3 8 0 q 4 -3 8 0" ${S}/>`,
       },
       {
-        title: "Step 6 — Curly Tail",
-        instruction: "Finish with a curly tail at the back. Add stripes if you want!",
-        tip: "Color your kitty any color you love!",
-        layer: `<path d="M140 170 Q 175 165, 175 130 Q 175 115, 165 118" ${S}/>`,
+        title: "Step 6 — Curly Tail & Stripes",
+        instruction: "Add a long curly tail behind the body, and a few little curved stripes on the head and body.",
+        tip: "Color your kitty orange, gray, or any color you love!",
+        layer: `<path d="M130 150 Q 165 145, 168 110 Q 168 95, 155 98" ${S}/>
+                <path d="M76 65 q 4 -2 8 0 M120 65 q 4 -2 8 0" ${S}/>
+                <path d="M90 135 q 5 -2 10 0 M105 145 q 5 -2 10 0" ${S}/>`,
       },
     ],
   },
