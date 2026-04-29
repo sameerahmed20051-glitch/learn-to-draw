@@ -37,42 +37,49 @@ export const lessons: Lesson[] = [
     accentTo: "to-[oklch(0.7_0.18_320)]",
     steps: [
       {
-        title: "Step 1 — Big Body",
-        instruction: "Draw a big oval in the middle of the page. This is the elephant's body.",
-        tip: "Make it as wide as your hand!",
-        layer: `<ellipse cx="110" cy="115" rx="55" ry="40" ${S}/>`,
+        title: "Step 1 — Round Head",
+        instruction: "Draw a big round circle on the upper-left side of the page. This is the elephant's head.",
+        tip: "Make it the size of a tennis ball!",
+        layer: `<circle cx="70" cy="80" r="32" ${S}/>`,
       },
       {
-        title: "Step 2 — Round Head",
-        instruction: "Add a smaller circle on the left side of the body for the head.",
-        layer: `<circle cx="55" cy="95" r="28" ${S}/>`,
+        title: "Step 2 — Long Curly Trunk",
+        instruction: "From the bottom of the head, draw a long trunk that curves down and curls up at the end like the letter J.",
+        tip: "Curl the tip up like a smile!",
+        layer: `<path d="M55 105 Q 45 135, 55 158 Q 65 175, 82 168 Q 92 162, 88 152" ${S}/>
+                <path d="M88 152 Q 84 148, 80 152" ${S}/>`,
       },
       {
-        title: "Step 3 — Long Trunk",
-        instruction: "From the head, draw a long curvy trunk that curls up at the end.",
-        tip: "Curl it up like a smile!",
-        layer: `<path d="M40 110 Q 25 140, 35 165 Q 45 180, 60 170" ${S}/>`,
+        title: "Step 3 — Big Floppy Ear",
+        instruction: "Draw one giant floppy ear behind the head. It should be bigger than the head!",
+        tip: "Like a huge leaf flapping in the wind.",
+        layer: `<path d="M75 52 Q 35 45, 32 88 Q 38 110, 65 105 Q 72 102, 75 95" ${S}/>`,
       },
       {
-        title: "Step 4 — Floppy Ear",
-        instruction: "Draw one big floppy ear behind the head, like a giant leaf.",
-        layer: `<path d="M55 70 Q 30 60, 35 95 Q 45 110, 60 100 Z" ${S}/>`,
+        title: "Step 4 — Big Round Body",
+        instruction: "Connect a big oval body to the right side of the head, going down and across the page.",
+        tip: "Make it nice and round and big!",
+        layer: `<path d="M98 78 Q 175 68, 178 130 Q 175 158, 100 158 Q 92 145, 95 105" ${S}/>`,
       },
       {
-        title: "Step 5 — Four Legs",
-        instruction: "Add four chunky legs under the body, like little tree trunks.",
-        layer: `<path d="M75 150 V 180 H 90 V 150" ${S}/>
-                <path d="M105 152 V 180 H 120 V 152" ${S}/>
-                <path d="M135 152 V 180 H 150 V 152" ${S}/>
-                <path d="M155 148 V 180 H 168 V 148" ${S}/>`,
+        title: "Step 5 — Four Tree-Trunk Legs",
+        instruction: "Draw four chunky rectangle legs under the body, with little toenail bumps at the bottom.",
+        tip: "Legs are short and thick like tree trunks.",
+        layer: `<path d="M105 158 V 188 Q 105 192, 110 192 H 122 Q 127 192, 127 188 V 158" ${S}/>
+                <path d="M150 158 V 188 Q 150 192, 155 192 H 167 Q 172 192, 172 188 V 158" ${S}/>
+                <path d="M112 192 q 3 -3 6 0 m 3 0 q 3 -3 6 0" ${S}/>
+                <path d="M157 192 q 3 -3 6 0 m 3 0 q 3 -3 6 0" ${S}/>`,
       },
       {
-        title: "Step 6 — Eye & Tail",
-        instruction: "Add a tiny eye, a smile, and a thin tail with a little tuft at the end.",
-        tip: "Now color it gray and you're done!",
-        layer: `<circle cx="50" cy="90" r="2" fill="currentColor"/>
-                <path d="M165 120 Q 180 130, 178 145" ${S}/>
-                <path d="M178 145 l -3 6 M178 145 l 4 4" ${S}/>`,
+        title: "Step 6 — Eye, Smile & Tail",
+        instruction: "Add a happy eye, a tiny smile under the eye, a toenail line on the trunk, and a thin tail with a fluffy tuft at the end.",
+        tip: "Now color your elephant gray with a pink ear inside!",
+        layer: `<circle cx="68" cy="78" r="3" fill="currentColor"/>
+                <circle cx="69" cy="77" r="1" fill="white"/>
+                <path d="M75 88 q 5 4 10 0" ${S}/>
+                <path d="M82 165 q 4 -2 6 -5" ${S}/>
+                <path d="M178 130 q 12 8 10 28" ${S}/>
+                <path d="M188 158 l -3 6 M188 158 l 3 6 M188 158 l 0 7" ${S}/>`,
       },
     ],
   },
