@@ -1,12 +1,13 @@
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getLesson, lessons } from "@/lib/lessons";
 import { KonvaCanvas, type KonvaCanvasHandle } from "@/components/KonvaCanvas";
 import { StepIllustration } from "@/components/StepIllustration";
 import { CelebrationModal } from "@/components/CelebrationModal";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Home as HomeIcon, PartyPopper } from "lucide-react";
+import { ArrowLeft, ArrowRight, Home as HomeIcon, PartyPopper, Volume2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSpeech } from "@/hooks/use-speech";
 
 export const Route = createFileRoute("/draw/$slug")({
   loader: ({ params }) => {
@@ -72,10 +73,25 @@ function DrawPage() {
   const [stepIndex, setStepIndex] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
   const canvasRef = useRef<KonvaCanvasHandle>(null);
+  const { speak, stop } = useSpeech();
 
   const step = lesson.steps[stepIndex];
   const isLast = stepIndex === lesson.steps.length - 1;
   const isFirst = stepIndex === 0;
+
+  // Speak instruction when step changes
+  useEffect(() => {
+    if (!showCelebration) {
+      speak(`${step.title}. ${step.instruction}`);
+    } else {
+      stop();
+    }
+    return () => stop();
+  }, [stepIndex, step.title, step.instruction, speak, stop, showCelebration]);
+
+  const handleRepeat = () => {
+    speak(`${step.title}. ${step.instruction}`);
+  };
 
   const goNext = () => {
     if (isLast) {
@@ -125,9 +141,9 @@ function DrawPage() {
       </header>
 
       {/* Split layout */}
-      <div className="relative flex-1 grid grid-cols-1 lg:grid-cols-[minmax(320px,420px)_1fr] gap-0 overflow-hidden">
+      <div className="relative flex-1 grid grid-cols-1 lg:grid-cols-[minmax(350px,450px)_1fr] gap-0 overflow-hidden">
         {/* LEFT: instructions */}
-        <aside className="relative flex flex-col galaxy-card lg:rounded-none rounded-none border-0 overflow-hidden">
+        <aside className="relative flex flex-col galaxy-card lg:rounded-none rounded-none border-0 overflow-hidden lg:border-r border-[var(--galaxy-teal)]/20 animate-in slide-in-from-left duration-500">
           {/* Step illustration */}
           <div
             className={cn(
@@ -139,7 +155,7 @@ function DrawPage() {
             <StepIllustration
               lesson={lesson}
               upToStep={stepIndex}
-              className="h-44 md:h-52 w-auto text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
+              className="h-44 md:h-60 w-auto text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] transition-all duration-700"
             />
           </div>
 
@@ -164,12 +180,25 @@ function DrawPage() {
             <div className="text-xs font-bold uppercase tracking-wider text-primary mb-1">
               Step {stepIndex + 1} of {lesson.steps.length}
             </div>
-            <h2 className="font-display font-black text-2xl text-foreground">
-              {step.title}
-            </h2>
-            <p className="mt-3 text-lg leading-relaxed text-foreground/90">
-              {step.instruction}
-            </p>
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <h2 className="font-display font-black text-2xl text-foreground">
+                  {step.title}
+                </h2>
+                <p className="mt-3 text-lg leading-relaxed text-foreground/90">
+                  {step.instruction}
+                </p>
+              </div>
+              <Button
+                size="icon"
+                variant="outline"
+                className="rounded-full h-12 w-12 shrink-0 border-2 border-primary/30 hover:border-primary hover:bg-primary/10 transition-all shadow-lg galaxy-glow"
+                onClick={handleRepeat}
+                title="Repeat instruction"
+              >
+                <Volume2 className="h-6 w-6 text-primary" />
+              </Button>
+            </div>
 
             {step.tip && (
               <div className="mt-4 rounded-2xl bg-accent/15 border border-accent/40 p-3">
@@ -224,7 +253,7 @@ function DrawPage() {
         <div className="galaxy-divider hidden lg:block absolute left-[420px] top-0 bottom-0 w-px pointer-events-none" />
 
         {/* RIGHT: drawing pad */}
-        <section className="min-h-[55vh] lg:min-h-0 p-4">
+        <section className="relative min-h-[50vh] lg:min-h-0 p-3 lg:p-6 animate-in fade-in zoom-in-95 duration-700">
           <KonvaCanvas ref={canvasRef} fileName={`${lesson.slug}-drawing`} />
         </section>
       </div>

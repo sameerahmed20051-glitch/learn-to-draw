@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import confetti from "canvas-confetti";
+import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Download, Sparkles, RotateCcw } from "lucide-react";
+import { Download, Sparkles, RotateCcw, Home } from "lucide-react";
 
 type Props = {
   open: boolean;
@@ -55,21 +56,35 @@ export function CelebrationModal({ open, onOpenChange, subject, onSave, onStartN
             Well Done! 🎉
           </DialogTitle>
           <DialogDescription className="text-base">
-            You drew a beautiful {subject}! Save your masterpiece or start a new drawing.
+            You drew a beautiful {subject}! What would you like to do next?
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col sm:flex-row gap-2 mt-4">
-          <Button onClick={onSave} size="lg" className="flex-1 rounded-full galaxy-glow">
+
+        <div className="flex flex-col gap-3 mt-4 px-4">
+          <Button onClick={onSave} size="lg" className="w-full rounded-full galaxy-glow h-12 font-bold">
             <Download className="mr-2 h-5 w-5" /> Save Drawing
           </Button>
-          <Button
-            onClick={onStartNew}
-            size="lg"
-            variant="secondary"
-            className="flex-1 rounded-full"
-          >
-            <RotateCcw className="mr-2 h-5 w-5" /> Start New
-          </Button>
+
+          <div className="grid grid-cols-2 gap-3">
+            <Button
+              onClick={onStartNew}
+              size="lg"
+              variant="secondary"
+              className="rounded-full h-12 font-bold"
+            >
+              <RotateCcw className="mr-2 h-5 w-5" /> Restart
+            </Button>
+
+            <Link to="/">
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full rounded-full h-12 font-bold border-primary/30 hover:bg-primary/10"
+              >
+                <Home className="mr-2 h-5 w-5" /> Home
+              </Button>
+            </Link>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

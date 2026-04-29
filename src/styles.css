@@ -58,6 +58,8 @@
   --color-galaxy-teal: var(--galaxy-teal);
   --color-galaxy-cyan: var(--galaxy-cyan);
   --color-galaxy-purple: var(--galaxy-purple);
+
+  --breakpoint-xs: 480px;
 }
 
 /* Galaxy theme is the default — dark cosmic background with teal/cyan accents */
@@ -158,13 +160,21 @@
   .galaxy-card {
     background: linear-gradient(
       180deg,
-      oklch(0.24 0.05 275 / 0.7),
-      oklch(0.2 0.05 275 / 0.55)
+      oklch(0.24 0.05 275 / 0.8),
+      oklch(0.2 0.05 275 / 0.7)
     );
     border: 1px solid oklch(0.78 0.15 195 / 0.25);
-    backdrop-filter: blur(14px);
+    backdrop-filter: blur(8px);
     box-shadow: var(--shadow-card),
       inset 0 1px 0 oklch(1 0 0 / 0.05);
+  }
+
+  /* Optimized card for lists/galleries to avoid massive blur lag */
+  .lesson-card {
+    background: oklch(0.22 0.05 270 / 0.9);
+    border: 1px solid oklch(0.78 0.15 195 / 0.2);
+    box-shadow: var(--shadow-card);
+    will-change: transform;
   }
 
   .galaxy-glow {
@@ -187,7 +197,7 @@
 
   .stars-bg::before {
     content: "";
-    position: absolute;
+    position: fixed;
     inset: 0;
     background-image:
       radial-gradient(1px 1px at 10% 20%, white, transparent),
@@ -198,7 +208,8 @@
       radial-gradient(1px 1px at 45% 85%, white, transparent),
       radial-gradient(1.5px 1.5px at 15% 50%, white, transparent),
       radial-gradient(1px 1px at 70% 80%, white, transparent);
-    opacity: 0.35;
+    opacity: 0.3;
     pointer-events: none;
+    z-index: -1;
   }
 }

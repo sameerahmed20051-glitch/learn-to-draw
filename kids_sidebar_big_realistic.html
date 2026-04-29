@@ -1,0 +1,384 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .sb {
+    width: 260px;
+    min-height: 700px;
+    background: #131c2e;
+    font-family: 'Nunito', sans-serif;
+    padding: 24px 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    border-radius: 16px;
+  }
+
+  .sb-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 10px;
+  }
+
+  .logo-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0e7490, #22d3ee);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+    box-shadow: 0 0 14px rgba(34,211,238,0.3);
+  }
+
+  .logo-text {
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -0.3px;
+    line-height: 1.1;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .nav-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 20px;
+    margin: 3px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+    user-select: none;
+    position: relative;
+  }
+
+  .nav-row:hover { background: rgba(255,255,255,0.05); transform: translateX(2px); }
+
+  .nav-row.active { background: #1a3347; }
+
+  .icon-wrap {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 26px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+
+  .nav-row:hover .icon-wrap { transform: scale(1.1) rotate(-4deg); }
+  .nav-row.active .icon-wrap { transform: scale(1.08); }
+
+  .icon-dash  { background: rgba(59,130,246,0.15); }
+  .icon-subj  { background: rgba(168,85,247,0.15); }
+  .icon-games { background: rgba(249,115,22,0.15); }
+  .icon-lead  { background: rgba(234,179,8,0.15);  }
+  .icon-study { background: rgba(16,185,129,0.15); }
+
+  .nav-label {
+    font-size: 16px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.5);
+    flex: 1;
+    letter-spacing: 0.1px;
+  }
+
+  .nav-row.active .nav-label { color: #22d3ee; }
+  .nav-row:hover .nav-label  { color: rgba(255,255,255,0.85); }
+
+  .arrow {
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+    transition: transform 0.25s ease;
+  }
+  .arrow.open { transform: rotate(180deg); }
+
+  .badge {
+    font-size: 10px;
+    font-weight: 900;
+    background: #22d3ee;
+    color: #0c1a28;
+    padding: 3px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    animation: pop 2s ease-in-out infinite;
+  }
+  @keyframes pop {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  .subjects-wrap {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease;
+  }
+  .subjects-wrap.open { max-height: 340px; opacity: 1; }
+
+  .sub-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px 10px 56px;
+    margin: 2px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .sub-row:hover { background: rgba(255,255,255,0.05); }
+  .sub-row.active-sub { background: rgba(34,211,238,0.08); }
+
+  .sub-icon { font-size: 20px; line-height: 1; width: 24px; text-align: center; }
+
+  .sub-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.45);
+    flex: 1;
+  }
+  .sub-row:hover .sub-label { color: rgba(255,255,255,0.8); }
+  .sub-row.active-sub .sub-label { color: #67e8f9; }
+
+  .sub-pill {
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+  .pill-m { background: rgba(245,158,11,0.2); color: #fbbf24; }
+  .pill-e { background: rgba(34,211,238,0.15); color: #67e8f9; }
+  .pill-p { background: rgba(244,63,94,0.15); color: #fb7185; }
+  .pill-s { background: rgba(129,140,248,0.15); color: #a5b4fc; }
+  .pill-a { background: rgba(236,72,153,0.15); color: #f9a8d4; }
+
+  .divider {
+    height: 1px;
+    background: rgba(255,255,255,0.05);
+    margin: 10px 20px;
+  }
+
+  .profile-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    margin: 8px 10px 0;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .profile-card:hover { background: rgba(255,255,255,0.06); }
+
+  .avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0e7490, #22d3ee);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(34,211,238,0.25);
+  }
+
+  .profile-name {
+    font-size: 13px; font-weight: 800;
+    color: rgba(255,255,255,0.8);
+  }
+  .profile-pts {
+    font-size: 11px; color: #22d3ee;
+    font-weight: 700; margin-top: 2px;
+  }
+
+  .xp-bar-wrap {
+    margin-top: 5px;
+    height: 5px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 90px;
+  }
+  .xp-bar {
+    height: 100%; width: 65%;
+    background: linear-gradient(90deg, #0e7490, #22d3ee);
+    border-radius: 10px;
+  }
+</style>
+
+<h2 class="sr-only">Kids learning sidebar for Grade 1 to 3 with Dashboard, Subjects, Games, Leaderboard and Study</h2>
+
+<div class="sb">
+
+  <div class="sb-logo">
+    <div class="logo-img">🎓</div>
+    <div>
+      <div class="logo-text">KidLearn</div>
+      <div class="logo-sub">Grade 1 – 3</div>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="nav-row active" id="nav-dash" onclick="setActive('nav-dash')">
+    <div class="icon-wrap icon-dash">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="13" width="10" height="12" rx="2.5" fill="#3b82f6"/>
+        <rect x="3" y="3" width="10" height="8" rx="2.5" fill="#60a5fa"/>
+        <rect x="15" y="3" width="10" height="12" rx="2.5" fill="#3b82f6"/>
+        <rect x="15" y="17" width="10" height="8" rx="2.5" fill="#60a5fa"/>
+      </svg>
+    </div>
+    <div class="nav-label">Dashboard</div>
+  </div>
+
+  <!-- Subjects -->
+  <div class="nav-row" id="nav-subj" onclick="toggleSubjects()">
+    <div class="icon-wrap icon-subj">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="9" height="12" rx="2" fill="#a855f7"/>
+        <rect x="5" y="5" width="7" height="2" rx="1" fill="#e9d5ff"/>
+        <rect x="5" y="8.5" width="5" height="1.5" rx="0.75" fill="#e9d5ff" opacity="0.6"/>
+        <rect x="5" y="11" width="6" height="1.5" rx="0.75" fill="#e9d5ff" opacity="0.6"/>
+        <rect x="15" y="4" width="9" height="12" rx="2" fill="#7c3aed"/>
+        <rect x="16" y="5" width="7" height="2" rx="1" fill="#ede9fe"/>
+        <rect x="16" y="8.5" width="5" height="1.5" rx="0.75" fill="#ede9fe" opacity="0.6"/>
+        <rect x="4" y="18" width="20" height="7" rx="2" fill="#9333ea"/>
+        <rect x="5" y="19.5" width="8" height="1.5" rx="0.75" fill="#f3e8ff" opacity="0.7"/>
+        <rect x="5" y="22" width="12" height="1.5" rx="0.75" fill="#f3e8ff" opacity="0.5"/>
+      </svg>
+    </div>
+    <div class="nav-label">Subjects</div>
+    <div class="arrow" id="subj-arrow">▼</div>
+  </div>
+
+  <div class="subjects-wrap" id="subj-wrap">
+    <div class="sub-row" onclick="setSub(this)">
+      <div class="sub-icon">➕</div>
+      <div class="sub-label">Maths</div>
+      <div class="sub-pill pill-m">Fun!</div>
+    </div>
+    <div class="sub-row" onclick="setSub(this)">
+      <div class="sub-icon">📖</div>
+      <div class="sub-label">English</div>
+      <div class="sub-pill pill-e">New</div>
+    </div>
+    <div class="sub-row" onclick="setSub(this)">
+      <div class="sub-icon">⚽</div>
+      <div class="sub-label">PDHPE</div>
+      <div class="sub-pill pill-p">Active</div>
+    </div>
+    <div class="sub-row" onclick="setSub(this)">
+      <div class="sub-icon">🔬</div>
+      <div class="sub-label">Science</div>
+      <div class="sub-pill pill-s">Wow!</div>
+    </div>
+    <div class="sub-row" onclick="setSub(this)">
+      <div class="sub-icon">🎨</div>
+      <div class="sub-label">Arts</div>
+      <div class="sub-pill pill-a">Create</div>
+    </div>
+  </div>
+
+  <!-- Games -->
+  <div class="nav-row" id="nav-games" onclick="setActive('nav-games')">
+    <div class="icon-wrap icon-games">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="9" width="22" height="13" rx="4" fill="#f97316"/>
+        <rect x="7" y="13" width="4" height="2" rx="1" fill="#fff" opacity="0.9"/>
+        <rect x="8" y="12" width="2" height="4" rx="1" fill="#fff" opacity="0.9"/>
+        <circle cx="19" cy="13.5" r="1.2" fill="#fff" opacity="0.9"/>
+        <circle cx="22" cy="15.5" r="1.2" fill="#fff" opacity="0.9"/>
+        <rect x="10" y="5" width="8" height="5" rx="2" fill="#fb923c"/>
+      </svg>
+    </div>
+    <div class="nav-label">Games</div>
+    <div class="badge">NEW</div>
+  </div>
+
+  <!-- Leaderboard -->
+  <div class="nav-row" id="nav-lead" onclick="setActive('nav-lead')">
+    <div class="icon-wrap icon-lead">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="7" width="8" height="17" rx="2" fill="#eab308"/>
+        <rect x="3" y="13" width="7" height="11" rx="2" fill="#ca8a04"/>
+        <rect x="18" y="10" width="7" height="14" rx="2" fill="#ca8a04"/>
+        <polygon points="14,2 15.2,5.5 19,5.5 16,7.8 17.2,11.3 14,9 10.8,11.3 12,7.8 9,5.5 12.8,5.5" fill="#fde047"/>
+      </svg>
+    </div>
+    <div class="nav-label">Leaderboard</div>
+  </div>
+
+  <!-- Study -->
+  <div class="nav-row" id="nav-study" onclick="setActive('nav-study')">
+    <div class="icon-wrap icon-study">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="12" r="7" fill="#10b981"/>
+        <circle cx="14" cy="12" r="4.5" fill="#059669"/>
+        <polygon points="14,7.5 15,11 14,10.5 13,11" fill="#6ee7b7"/>
+        <rect x="13" y="11" width="2" height="3" rx="0.5" fill="#6ee7b7"/>
+        <rect x="14" y="13" width="2.5" height="1.5" rx="0.5" fill="#6ee7b7" transform="rotate(0 14 13)"/>
+        <rect x="5" y="21" width="18" height="3.5" rx="2" fill="#10b981" opacity="0.3"/>
+        <rect x="8" y="22" width="12" height="1.5" rx="0.75" fill="#34d399"/>
+      </svg>
+    </div>
+    <div class="nav-label">Study</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="profile-card">
+    <div class="avatar">🧒</div>
+    <div style="flex:1">
+      <div class="profile-name">Alex K.</div>
+      <div class="profile-pts">⚡ 320 pts · Level 5</div>
+      <div class="xp-bar-wrap"><div class="xp-bar"></div></div>
+    </div>
+    <div style="font-size:18px">✨</div>
+  </div>
+
+</div>
+
+<script>
+  const navIds = ['nav-dash','nav-subj','nav-games','nav-lead','nav-study'];
+
+  function setActive(id) {
+    navIds.forEach(n => document.getElementById(n).classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (id !== 'nav-subj') {
+      document.getElementById('subj-wrap').classList.remove('open');
+      document.getElementById('subj-arrow').classList.remove('open');
+    }
+  }
+
+  function toggleSubjects() {
+    const wrap = document.getElementById('subj-wrap');
+    const arrow = document.getElementById('subj-arrow');
+    navIds.forEach(n => document.getElementById(n).classList.remove('active'));
+    document.getElementById('nav-subj').classList.add('active');
+    wrap.classList.toggle('open');
+    arrow.classList.toggle('open');
+  }
+
+  function setSub(el) {
+    document.querySelectorAll('.sub-row').forEach(r => r.classList.remove('active-sub'));
+    el.classList.add('active-sub');
+  }
+</script>

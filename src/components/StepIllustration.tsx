@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { Lesson } from "@/lib/lessons";
 
 type Props = {
@@ -12,7 +13,11 @@ type Props = {
  * that the panel image only shows the drawing built so far — never the
  * full final picture.
  */
-export function StepIllustration({ lesson, upToStep, className }: Props) {
+export const StepIllustration = memo(function StepIllustration({
+  lesson,
+  upToStep,
+  className,
+}: Props) {
   const html = lesson.steps
     .slice(0, upToStep + 1)
     .map((s) => s.layer)
@@ -29,4 +34,4 @@ export function StepIllustration({ lesson, upToStep, className }: Props) {
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
-}
+});

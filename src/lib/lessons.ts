@@ -38,48 +38,46 @@ export const lessons: Lesson[] = [
     steps: [
       {
         title: "Step 1 — Round Head",
-        instruction: "Draw a big round circle on the upper-left side of the page. This is the elephant's head.",
-        tip: "Make it the size of a tennis ball!",
-        layer: `<circle cx="70" cy="80" r="32" ${S}/>`,
+        instruction: "Draw a big round circle for the elephant's head in the top middle of your page.",
+        tip: "Make it nice and big like a giant balloon!",
+        layer: `<circle cx="100" cy="80" r="36" ${S} fill="currentColor" fill-opacity="0.1"/>`,
       },
       {
-        title: "Step 2 — Long Curly Trunk",
-        instruction: "From the bottom of the head, draw a long trunk that curves down and curls up at the end like the letter J.",
-        tip: "Curl the tip up like a smile!",
-        layer: `<path d="M55 105 Q 45 135, 55 158 Q 65 175, 82 168 Q 92 162, 88 152" ${S}/>
-                <path d="M88 152 Q 84 148, 80 152" ${S}/>`,
+        title: "Step 2 — Big Oval Body",
+        instruction: "Add a large oval body right below the head. It should be wider than the head!",
+        tip: "This is the biggest part of the elephant.",
+        layer: `<rect x="50" y="90" width="100" height="70" rx="30" ${S} fill="currentColor" fill-opacity="0.1"/>`,
       },
       {
-        title: "Step 3 — Big Floppy Ear",
-        instruction: "Draw one giant floppy ear behind the head. It should be bigger than the head!",
-        tip: "Like a huge leaf flapping in the wind.",
-        layer: `<path d="M75 52 Q 35 45, 32 88 Q 38 110, 65 105 Q 72 102, 75 95" ${S}/>`,
+        title: "Step 3 — Big Floppy Ears",
+        instruction: "Draw two giant floppy ears on each side of the head. Elephants use them like big fans!",
+        tip: "Curve them out like huge butterfly wings.",
+        layer: `<path d="M70,60 C30,40 20,100 64,120" ${S}/>
+                <path d="M130,60 C170,40 180,100 136,120" ${S}/>`,
       },
       {
-        title: "Step 4 — Big Round Body",
-        instruction: "Connect a big oval body to the right side of the head, going down and across the page.",
-        tip: "Make it nice and round and big!",
-        layer: `<path d="M98 78 Q 175 68, 178 130 Q 175 158, 100 158 Q 92 145, 95 105" ${S}/>`,
+        title: "Step 4 — Long Curly Trunk",
+        instruction: "From the middle of the face, draw a long trunk that curves down and curls at the end.",
+        tip: "The trunk is like a super-long nose!",
+        layer: `<path d="M100,90 Q100,150 90,164 Q84,170 90,170 Q96,170 100,164" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>`,
       },
       {
-        title: "Step 5 — Four Tree-Trunk Legs",
-        instruction: "Draw four chunky rectangle legs under the body, with little toenail bumps at the bottom.",
-        tip: "Legs are short and thick like tree trunks.",
-        layer: `<path d="M105 158 V 188 Q 105 192, 110 192 H 122 Q 127 192, 127 188 V 158" ${S}/>
-                <path d="M150 158 V 188 Q 150 192, 155 192 H 167 Q 172 192, 172 188 V 158" ${S}/>
-                <path d="M112 192 q 3 -3 6 0 m 3 0 q 3 -3 6 0" ${S}/>
-                <path d="M157 192 q 3 -3 6 0 m 3 0 q 3 -3 6 0" ${S}/>`,
+        title: "Step 5 — Strong Tusks",
+        instruction: "Add two pointy white tusks on each side of the trunk.",
+        tip: "Tusks help elephants lift things!",
+        layer: `<path d="M86,96 Q80,124 70,120" ${S} fill="white" fill-opacity="0.4"/>
+                <path d="M114,96 Q120,124 130,120" ${S} fill="white" fill-opacity="0.4"/>`,
       },
       {
-        title: "Step 6 — Eye, Smile & Tail",
-        instruction: "Add a happy eye, a tiny smile under the eye, a toenail line on the trunk, and a thin tail with a fluffy tuft at the end.",
-        tip: "Now color your elephant gray with a pink ear inside!",
-        layer: `<circle cx="68" cy="78" r="3" fill="currentColor"/>
-                <circle cx="69" cy="77" r="1" fill="white"/>
-                <path d="M75 88 q 5 4 10 0" ${S}/>
-                <path d="M82 165 q 4 -2 6 -5" ${S}/>
-                <path d="M178 130 q 12 8 10 28" ${S}/>
-                <path d="M188 158 l -3 6 M188 158 l 3 6 M188 158 l 0 7" ${S}/>`,
+        title: "Step 6 — Eyes, Legs & Details",
+        instruction: "Draw two chunky legs at the bottom, two happy eyes, and little wrinkle lines on the trunk.",
+        tip: "Now your elephant is ready to trumpet! 🎺",
+        layer: `<rect x="64" y="150" width="24" height="36" rx="8" ${S} fill="currentColor" fill-opacity="0.1"/>
+                <rect x="112" y="150" width="24" height="36" rx="8" ${S} fill="currentColor" fill-opacity="0.1"/>
+                <circle cx="86" cy="76" r="4" fill="currentColor"/>
+                <circle cx="114" cy="76" r="4" fill="currentColor"/>
+                <line x1="96" y1="116" x2="104" y2="116" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+                <line x1="96" y1="130" x2="104" y2="130" stroke="currentColor" stroke-width="2" opacity="0.6"/>`,
       },
     ],
   },
@@ -401,33 +399,38 @@ export const lessons: Lesson[] = [
     accentTo: "to-[oklch(0.75_0.16_70)]",
     steps: [
       {
-        title: "Step 1 — Top Point",
-        instruction: "Make a small dot at the top middle of your page.",
-        layer: `<circle cx="100" cy="35" r="2.5" fill="currentColor"/>`,
-      },
-      {
-        title: "Step 2 — Down to Right",
-        instruction: "From the top dot, draw a straight line down to the bottom right.",
+        title: "Step 1 — Slant Down",
+        instruction: "Start at the top and draw a slanted line down to the right.",
+        tip: "Like a slide at the park!",
         layer: `<path d="M100 35 L 145 165" ${S}/>`,
       },
       {
-        title: "Step 3 — Across to Left",
-        instruction: "Without lifting your pen, draw a line straight across to the left.",
+        title: "Step 2 — Slide Up",
+        instruction: "Now draw a line going up and to the left.",
+        tip: "Keep your pencil on the paper!",
         layer: `<path d="M145 165 L 35 85" ${S}/>`,
       },
       {
-        title: "Step 4 — Up to Right",
-        instruction: "Now draw a line up and across to the right side.",
+        title: "Step 3 — Zoom Across",
+        instruction: "Draw a straight line all the way across to the right side.",
+        tip: "Zip! Like a fast car.",
         layer: `<path d="M35 85 L 165 85" ${S}/>`,
       },
       {
+        title: "Step 4 — Slide Down",
+        instruction: "Draw another slanted line going down to the left.",
+        tip: "Almost there!",
+        layer: `<path d="M165 85 L 55 165" ${S}/>`,
+      },
+      {
         title: "Step 5 — Back to Start",
-        instruction: "Draw a line down to the left, then back up to where you started!",
-        layer: `<path d="M165 85 L 55 165 L 100 35" ${S}/>`,
+        instruction: "Draw the last line back up to the top where you started!",
+        tip: "You made a star shape!",
+        layer: `<path d="M55 165 L 100 35" ${S}/>`,
       },
       {
         title: "Step 6 — Happy Star",
-        instruction: "Add a happy face inside and sparkles around. Color it bright yellow!",
+        instruction: "Add a happy face inside and little sparkles around. Color it bright yellow!",
         tip: "Stars love to smile!",
         layer: `<circle cx="88" cy="105" r="2" fill="currentColor"/>
                 <circle cx="112" cy="105" r="2" fill="currentColor"/>

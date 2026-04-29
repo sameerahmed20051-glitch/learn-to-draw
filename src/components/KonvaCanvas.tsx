@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from "react";
 import Konva from "konva";
 import { Stage, Layer, Line, Circle } from "react-konva";
 import {
@@ -68,10 +68,10 @@ function ToolButton({ active, onClick, label, children }: ToolButtonProps) {
       aria-label={label}
       title={label}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-4 h-10 text-sm font-bold whitespace-nowrap transition-all border",
+        "inline-flex items-center justify-center gap-1.5 rounded-full px-3 sm:px-4 h-10 sm:h-11 text-sm font-black whitespace-nowrap transition-all border-2",
         active
-          ? "bg-primary text-primary-foreground border-primary galaxy-glow"
-          : "bg-card/60 text-foreground border-[var(--galaxy-teal)]/25 hover:bg-card hover:border-[var(--galaxy-teal)]/50",
+          ? "bg-primary text-primary-foreground border-primary galaxy-glow scale-105"
+          : "bg-card/40 text-foreground border-[var(--galaxy-teal)]/20 hover:bg-card hover:border-[var(--galaxy-teal)]/40 active:scale-95",
       )}
     >
       {children}
@@ -147,10 +147,19 @@ export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCa
     if (!stage) return;
     const pos = stage.getPointerPosition();
     if (!pos) return;
+
     setStrokes((prev) => {
       if (prev.length === 0) return prev;
+      const last = prev[prev.length - 1];
+      
+      // Optimization: Only add point if moved more than 2px
+      const lastX = last.points[last.points.length - 2];
+      const lastY = last.points[last.points.length - 1];
+      const dx = pos.x - lastX;
+      const dy = pos.y - lastY;
+      if (dx * dx + dy * dy < 4) return prev;
+
       const next = prev.slice();
-      const last = next[next.length - 1];
       next[next.length - 1] = { ...last, points: [...last.points, pos.x, pos.y] };
       return next;
     });
@@ -176,86 +185,20 @@ export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCa
 
   return (
     <div className="flex h-full flex-col gap-3 min-w-0">
-      {/* Toolbar */}
-      <div className="galaxy-card rounded-2xl p-3 flex flex-wrap items-center gap-x-3 gap-y-2 min-w-0">
-        {/* Tool buttons */}
-        <div className="flex flex-wrap items-center gap-1.5">
-          <ToolButton active={tool === "pen"} onClick={() => setTool("pen")} label="Pen">
-            <Pencil className="h-4 w-4" /> Pen
-          </ToolButton>
-          <ToolButton
-            active={tool === "eraser"}
-            onClick={() => setTool("eraser")}
-            label="Eraser"
-          >
-            <Eraser className="h-4 w-4" /> Eraser
-          </ToolButton>
-          <ToolButton onClick={handleUndo} label="Undo">
-            <Undo2 className="h-4 w-4" /> Undo
-          </ToolButton>
-          <ToolButton onClick={() => setConfirmClear(true)} label="Clear">
-            <Trash2 className="h-4 w-4" /> Clear
-          </ToolButton>
-          <ToolButton onClick={handleSave} label="Save">
-            <Download className="h-4 w-4" /> Save
-          </ToolButton>
-        </div>
+      <header className="relative flex items-center justify-between px-4 py-3 border-b border-[var(--galaxy-teal)]/20 bg-card/40 backdrop-blur-[2px]">
+        <DrawingToolbar
+          tool={tool}
+          setTool={setTool}
+          color={color}
+          setColor={setColor}
+          brush={brush}
+          setBrush={setBrush}
+          handleUndo={handleUndo}
+          handleSave={handleSave}
+          setConfirmClear={setConfirmClear}
+        />
+      </header>
 
-        {/* Divider */}
-        <div className="h-8 w-px bg-[var(--galaxy-teal)]/20 mx-1 hidden md:block" />
-
-        {/* Colors */}
-        <div className="flex flex-wrap items-center gap-1.5">
-          {COLORS.map((c) => (
-            <button
-              key={c.value}
-              type="button"
-              onClick={() => {
-                setColor(c.value);
-                setTool("pen");
-              }}
-              aria-label={c.name}
-              title={c.name}
-              className={cn(
-                "h-7 w-7 rounded-full border-2 transition-all shrink-0",
-                color === c.value && tool === "pen"
-                  ? "ring-2 ring-offset-2 ring-offset-background ring-[var(--galaxy-teal)] scale-110 border-white"
-                  : "border-white/40 hover:scale-110",
-              )}
-              style={{ backgroundColor: c.value }}
-            />
-          ))}
-        </div>
-
-        {/* Brush sizes */}
-        <div className="flex items-center gap-1.5">
-          {SIZES.map((s) => (
-            <button
-              key={s.value}
-              type="button"
-              onClick={() => setBrush(s.value)}
-              aria-label={`Brush ${s.name}`}
-              title={s.name}
-              className={cn(
-                "flex h-9 w-9 items-center justify-center rounded-full border transition-all shrink-0",
-                brush === s.value
-                  ? "bg-primary/20 border-primary galaxy-glow"
-                  : "bg-card/40 border-border hover:bg-card/70",
-              )}
-            >
-              <span
-                className="block rounded-full bg-foreground"
-                style={{
-                  width: Math.min(s.value, 18),
-                  height: Math.min(s.value, 18),
-                }}
-              />
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Canvas */}
       <div
         ref={containerRef}
         className="relative flex-1 overflow-hidden rounded-3xl border-2 border-[var(--galaxy-teal)]/30 bg-[#fdfaf3] galaxy-glow min-h-[300px]"
@@ -282,19 +225,20 @@ export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCa
                 strokeWidth={s.tool === "eraser" ? s.size * 2.5 : s.size}
                 lineCap="round"
                 lineJoin="round"
-                tension={0.3}
+                tension={0}
+                perfectDrawEnabled={false}
+                shadowForStrokeEnabled={false}
+                hitStrokeWidth={0}
                 globalCompositeOperation={
                   s.tool === "eraser" ? "destination-out" : "source-over"
                 }
               />
             ))}
-            {/* Invisible circle ensures Stage has a hit area even before drawing */}
             <Circle x={-100} y={-100} radius={1} opacity={0} />
           </Layer>
         </Stage>
       </div>
 
-      {/* Clear confirmation */}
       <Dialog open={confirmClear} onOpenChange={setConfirmClear}>
         <DialogContent className="galaxy-card border-[var(--galaxy-teal)]/30">
           <DialogHeader>
@@ -319,6 +263,100 @@ export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCa
           </DialogFooter>
         </DialogContent>
       </Dialog>
+    </div>
+  );
+});
+
+type DrawingToolbarProps = {
+  tool: Tool;
+  setTool: (t: Tool) => void;
+  color: string;
+  setColor: (c: string) => void;
+  brush: number;
+  setBrush: (b: number) => void;
+  handleUndo: () => void;
+  handleSave: () => void;
+  setConfirmClear: (c: boolean) => void;
+};
+
+const DrawingToolbar = memo(function DrawingToolbar({
+  tool,
+  setTool,
+  color,
+  setColor,
+  brush,
+  setBrush,
+  handleUndo,
+  handleSave,
+  setConfirmClear,
+}: DrawingToolbarProps) {
+  return (
+    <div className="galaxy-card rounded-2xl p-2 sm:p-4 flex flex-wrap items-center gap-x-4 gap-y-3 min-w-0 shadow-xl border-t border-white/5">
+      <div className="flex flex-wrap items-center gap-2">
+        <ToolButton active={tool === "pen"} onClick={() => setTool("pen")} label="Pen">
+          <Pencil className="h-4 w-4" /> <span className="hidden xs:inline">Pen</span>
+        </ToolButton>
+        <ToolButton active={tool === "eraser"} onClick={() => setTool("eraser")} label="Eraser">
+          <Eraser className="h-4 w-4" /> <span className="hidden xs:inline">Eraser</span>
+        </ToolButton>
+        <div className="flex items-center gap-2">
+          <ToolButton onClick={handleUndo} label="Undo">
+            <Undo2 className="h-4 w-4" />
+          </ToolButton>
+          <ToolButton onClick={() => setConfirmClear(true)} label="Clear">
+            <Trash2 className="h-4 w-4" />
+          </ToolButton>
+        </div>
+        <ToolButton onClick={handleSave} label="Save">
+          <Download className="h-4 w-4" /> <span className="hidden sm:inline">Save</span>
+        </ToolButton>
+      </div>
+
+      <div className="h-8 w-px bg-[var(--galaxy-teal)]/20 mx-1 hidden lg:block" />
+
+      <div className="flex flex-wrap items-center gap-2">
+        {COLORS.map((c) => (
+          <button
+            key={c.value}
+            type="button"
+            onClick={() => {
+              setColor(c.value);
+              setTool("pen");
+            }}
+            className={cn(
+              "h-7 w-7 sm:h-8 sm:w-8 rounded-full border-2 transition-all shrink-0 shadow-sm",
+              color === c.value && tool === "pen"
+                ? "ring-2 ring-offset-2 ring-offset-background ring-primary scale-125 border-white z-10"
+                : "border-white/30 hover:scale-115 active:scale-90",
+            )}
+            style={{ backgroundColor: c.value }}
+          />
+        ))}
+      </div>
+
+      <div className="flex items-center gap-2 ml-auto sm:ml-0">
+        {SIZES.map((s) => (
+          <button
+            key={s.value}
+            type="button"
+            onClick={() => setBrush(s.value)}
+            className={cn(
+              "flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border-2 transition-all shrink-0",
+              brush === s.value
+                ? "bg-primary text-primary-foreground border-primary galaxy-glow scale-105"
+                : "bg-card/40 border-border hover:bg-card/60 active:scale-95",
+            )}
+          >
+            <span
+              className={cn(
+                "block rounded-full bg-current",
+                brush === s.value ? "bg-primary-foreground" : "bg-foreground",
+              )}
+              style={{ width: Math.min(s.value, 20), height: Math.min(s.value, 20) }}
+            />
+          </button>
+        ))}
+      </div>
     </div>
   );
 });
