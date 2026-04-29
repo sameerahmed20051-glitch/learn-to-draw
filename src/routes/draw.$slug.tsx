@@ -145,8 +145,8 @@ function DrawPage() {
       {/* Split layout */}
       <div className="relative flex-1 grid grid-cols-1 lg:grid-cols-[minmax(350px,450px)_1fr] gap-0 overflow-hidden">
         {/* LEFT: instructions */}
-        <aside className="relative flex flex-col galaxy-card lg:rounded-none rounded-none border-0 overflow-hidden lg:border-r border-[var(--galaxy-teal)]/20 animate-in slide-in-from-left duration-500">
-          {/* Step illustration */}
+        <aside className="relative flex flex-col galaxy-card lg:rounded-none rounded-none border-0 overflow-hidden lg:border-r border-[var(--galaxy-teal)]/20 lg:after:content-[''] lg:after:absolute lg:after:right-0 lg:after:top-0 lg:after:bottom-0 lg:after:w-px lg:after:bg-gradient-to-b lg:after:from-transparent lg:after:via-primary/60 lg:after:to-transparent lg:after:shadow-[0_0_12px_rgba(oklch(0.78_0.15_195),0.5)] animate-in slide-in-from-left duration-500">
+          {/* ... existing aside content ... */}
           <div
             className={cn(
               "p-5 flex items-center justify-center bg-gradient-to-br border-b border-[var(--galaxy-teal)]/20",
@@ -250,9 +250,6 @@ function DrawPage() {
             )}
           </div>
         </aside>
-
-        {/* Glowing divider */}
-        <div className="galaxy-divider hidden lg:block absolute left-[420px] top-0 bottom-0 w-px pointer-events-none" />
 
         {/* RIGHT: drawing pad */}
         <section className="relative min-h-[50vh] lg:min-h-0 p-3 lg:p-6 animate-in fade-in zoom-in-95 duration-700">
