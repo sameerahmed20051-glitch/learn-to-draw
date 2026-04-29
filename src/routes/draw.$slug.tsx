@@ -146,7 +146,7 @@ function DrawPage() {
           <div className="flex-1 overflow-auto p-5">
             {/* Progress dots */}
             <div className="flex items-center gap-2 mb-5">
-              {lesson.steps.map((_s, i) => (
+              {lesson.steps.map((_s: unknown, i: number) => (
                 <div
                   key={i}
                   className={cn(
