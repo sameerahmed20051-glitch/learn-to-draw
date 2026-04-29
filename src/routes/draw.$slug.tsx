@@ -190,6 +190,34 @@ function DrawPage() {
                 <p className="mt-3 text-lg leading-relaxed text-foreground/90">
                   {step.instruction}
                 </p>
+
+                {/* Step nav moved here */}
+                <div className="mt-6 flex items-center gap-3">
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    onClick={() => setStepIndex((i) => Math.max(0, i - 1))}
+                    disabled={isFirst}
+                    className="rounded-full flex-1 font-bold h-12"
+                  >
+                    <ArrowLeft className="mr-1 h-5 w-5" /> Back
+                  </Button>
+                  <Button
+                    size="lg"
+                    onClick={goNext}
+                    className="rounded-full flex-1 font-bold galaxy-glow h-12"
+                  >
+                    {isLast ? (
+                      <>
+                        Finish <PartyPopper className="ml-1 h-5 w-5" />
+                      </>
+                    ) : (
+                      <>
+                        Next <ArrowRight className="ml-1 h-5 w-5" />
+                      </>
+                    )}
+                  </Button>
+                </div>
               </div>
               <Button
                 size="icon"
@@ -220,34 +248,6 @@ function DrawPage() {
                 </div>
               </div>
             )}
-          </div>
-
-          {/* Step nav */}
-          <div className="flex items-center justify-between gap-2 p-4 border-t border-[var(--galaxy-teal)]/20 bg-background/30">
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={() => setStepIndex((i) => Math.max(0, i - 1))}
-              disabled={isFirst}
-              className="rounded-full flex-1 font-bold"
-            >
-              <ArrowLeft className="mr-1 h-5 w-5" /> Back
-            </Button>
-            <Button
-              size="lg"
-              onClick={goNext}
-              className="rounded-full flex-1 font-bold galaxy-glow"
-            >
-              {isLast ? (
-                <>
-                  Finish <PartyPopper className="ml-1 h-5 w-5" />
-                </>
-              ) : (
-                <>
-                  Next <ArrowRight className="ml-1 h-5 w-5" />
-                </>
-              )}
-            </Button>
           </div>
         </aside>
 
