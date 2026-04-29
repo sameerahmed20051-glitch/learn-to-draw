@@ -1,9 +1,11 @@
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { getLesson, lessons } from "@/lib/lessons";
-import { KonvaCanvas, type KonvaCanvasHandle } from "@/components/KonvaCanvas";
 import { StepIllustration } from "@/components/StepIllustration";
 import { CelebrationModal } from "@/components/CelebrationModal";
+import { lazy, Suspense } from "react";
+
+const KonvaCanvas = lazy(() => import("@/components/KonvaCanvas").then(m => ({ default: m.KonvaCanvas })));
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Home as HomeIcon, PartyPopper, Volume2 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -72,8 +74,8 @@ function DrawPage() {
   const { lesson } = Route.useLoaderData();
   const [stepIndex, setStepIndex] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
-  const canvasRef = useRef<KonvaCanvasHandle>(null);
-  const { speak, stop } = useSpeech();
+  const canvasRef = useRef<any>(null); // Use any for the lazy ref or define type elsewhere
+  const { speak, stop, voicesLoaded } = useSpeech();
 
   const step = lesson.steps[stepIndex];
   const isLast = stepIndex === lesson.steps.length - 1;
@@ -81,13 +83,13 @@ function DrawPage() {
 
   // Speak instruction when step changes
   useEffect(() => {
-    if (!showCelebration) {
+    if (!showCelebration && voicesLoaded) {
       speak(`${step.title}. ${step.instruction}`);
     } else {
       stop();
     }
     return () => stop();
-  }, [stepIndex, step.title, step.instruction, speak, stop, showCelebration]);
+  }, [stepIndex, step.title, step.instruction, speak, stop, showCelebration, voicesLoaded]);
 
   const handleRepeat = () => {
     speak(`${step.title}. ${step.instruction}`);
@@ -254,7 +256,16 @@ function DrawPage() {
 
         {/* RIGHT: drawing pad */}
         <section className="relative min-h-[50vh] lg:min-h-0 p-3 lg:p-6 animate-in fade-in zoom-in-95 duration-700">
-          <KonvaCanvas ref={canvasRef} fileName={`${lesson.slug}-drawing`} />
+          <Suspense fallback={
+            <div className="flex h-full items-center justify-center galaxy-card rounded-3xl border-2 border-[var(--galaxy-teal)]/30 bg-[#fdfaf3]">
+              <div className="flex flex-col items-center gap-3">
+                <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+                <span className="font-bold text-muted-foreground">Preparing your magic canvas...</span>
+              </div>
+            </div>
+          }>
+            <KonvaCanvas ref={canvasRef} fileName={`${lesson.slug}-drawing`} />
+          </Suspense>
         </section>
       </div>
 
