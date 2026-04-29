@@ -94,40 +94,54 @@ export const lessons: Lesson[] = [
     steps: [
       {
         title: "Step 1 — Round Head",
-        instruction: "Draw a big round circle in the middle of your page for the cat's head.",
-        layer: `<circle cx="100" cy="100" r="55" ${S}/>`,
+        instruction: "Draw a big round circle in the middle-top of your page for the cat's head.",
+        tip: "Make it nice and round like an apple!",
+        layer: `<circle cx="100" cy="80" r="40" ${S}/>`,
       },
       {
-        title: "Step 2 — Pointy Ears",
-        instruction: "Add two triangle ears on top of the head.",
-        layer: `<path d="M55 65 L 65 25 L 90 55" ${S}/>
-                <path d="M145 65 L 135 25 L 110 55" ${S}/>`,
+        title: "Step 2 — Pointy Triangle Ears",
+        instruction: "Add two triangle ears on top of the head with little lines inside.",
+        tip: "Like two slices of pizza pointing up!",
+        layer: `<path d="M68 60 L 62 25 L 92 50 Z" ${S}/>
+                <path d="M132 60 L 138 25 L 108 50 Z" ${S}/>
+                <path d="M70 50 L 75 35" ${S}/>
+                <path d="M130 50 L 125 35" ${S}/>`,
       },
       {
-        title: "Step 3 — Sweet Eyes & Nose",
-        instruction: "Draw two oval eyes and a tiny triangle nose in the middle.",
-        layer: `<ellipse cx="80" cy="95" rx="6" ry="9" fill="currentColor"/>
-                <ellipse cx="120" cy="95" rx="6" ry="9" fill="currentColor"/>
-                <path d="M95 115 L 105 115 L 100 122 Z" fill="currentColor"/>`,
+        title: "Step 3 — Big Eyes & Nose",
+        instruction: "Draw two big round eyes with little dots inside, and a tiny triangle nose between them.",
+        tip: "Add a small white sparkle on each eye!",
+        layer: `<circle cx="82" cy="78" r="7" ${S}/>
+                <circle cx="118" cy="78" r="7" ${S}/>
+                <ellipse cx="82" cy="79" rx="3" ry="5" fill="currentColor"/>
+                <ellipse cx="118" cy="79" rx="3" ry="5" fill="currentColor"/>
+                <circle cx="80" cy="76" r="1.2" fill="white"/>
+                <circle cx="116" cy="76" r="1.2" fill="white"/>
+                <path d="M95 92 L 105 92 L 100 99 Z" fill="currentColor"/>`,
       },
       {
-        title: "Step 4 — Mouth & Whiskers",
-        instruction: "Add a little smiley mouth and three whiskers on each side.",
-        layer: `<path d="M100 122 Q 92 132, 86 128 M100 122 Q 108 132, 114 128" ${S}/>
-                <path d="M55 110 H 30 M55 120 H 32 M58 130 H 35" ${S}/>
-                <path d="M145 110 H 170 M145 120 H 168 M142 130 H 165" ${S}/>`,
+        title: "Step 4 — Smile & Whiskers",
+        instruction: "Draw a cute W mouth under the nose and three whiskers on each side.",
+        tip: "Whiskers help cats feel their way!",
+        layer: `<path d="M100 99 Q 95 108, 90 104 M100 99 Q 105 108, 110 104" ${S}/>
+                <path d="M65 90 H 40 M65 98 H 42 M67 106 H 45" ${S}/>
+                <path d="M135 90 H 160 M135 98 H 158 M133 106 H 155" ${S}/>`,
       },
       {
-        title: "Step 5 — Body & Legs",
-        instruction: "Draw a soft oval body below the head with two front paws.",
-        layer: `<path d="M60 150 Q 100 200, 140 150" ${S}/>
-                <path d="M85 175 V 188 M115 175 V 188" ${S}/>`,
+        title: "Step 5 — Soft Body & Paws",
+        instruction: "Draw a U-shape under the head for the body, with two front paws sticking out at the bottom.",
+        tip: "Cats sit up nice and tall!",
+        layer: `<path d="M70 115 Q 60 165, 75 180 H 125 Q 140 165, 130 115" ${S}/>
+                <path d="M82 180 q 4 -3 8 0 q 4 -3 8 0" ${S}/>
+                <path d="M102 180 q 4 -3 8 0 q 4 -3 8 0" ${S}/>`,
       },
       {
-        title: "Step 6 — Curly Tail",
-        instruction: "Finish with a curly tail at the back. Add stripes if you want!",
-        tip: "Color your kitty any color you love!",
-        layer: `<path d="M140 170 Q 175 165, 175 130 Q 175 115, 165 118" ${S}/>`,
+        title: "Step 6 — Curly Tail & Stripes",
+        instruction: "Add a long curly tail behind the body, and a few little curved stripes on the head and body.",
+        tip: "Color your kitty orange, gray, or any color you love!",
+        layer: `<path d="M130 150 Q 165 145, 168 110 Q 168 95, 155 98" ${S}/>
+                <path d="M76 65 q 4 -2 8 0 M120 65 q 4 -2 8 0" ${S}/>
+                <path d="M90 135 q 5 -2 10 0 M105 145 q 5 -2 10 0" ${S}/>`,
       },
     ],
   },
