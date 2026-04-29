@@ -1,7 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import Konva from "konva";
-import { Stage, Layer, Line } from "react-konva";
-import { Button } from "@/components/ui/button";
+import { Stage, Layer, Line, Circle } from "react-konva";
 import {
   Dialog,
   DialogContent,
@@ -10,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Pencil, Eraser, Undo2, Trash2, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -51,6 +51,34 @@ type Props = {
   fileName?: string;
 };
 
+// Plain styled button — kept OUTSIDE the parent component so React doesn't
+// unmount/remount it on every state change (which can swallow clicks).
+type ToolButtonProps = {
+  active?: boolean;
+  onClick: () => void;
+  label: string;
+  children: React.ReactNode;
+};
+
+function ToolButton({ active, onClick, label, children }: ToolButtonProps) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      title={label}
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full px-4 h-10 text-sm font-bold whitespace-nowrap transition-all border",
+        active
+          ? "bg-primary text-primary-foreground border-primary galaxy-glow"
+          : "bg-card/60 text-foreground border-[var(--galaxy-teal)]/25 hover:bg-card hover:border-[var(--galaxy-teal)]/50",
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
 export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCanvas(
   { fileName = "my-drawing" },
   ref,
@@ -78,7 +106,7 @@ export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCa
     };
     update();
     const ro = new ResizeObserver(() => {
-      // Defer to next frame to avoid the "ResizeObserver loop completed" warning
+      // Defer to next frame to avoid the "ResizeObserver loop" warning
       requestAnimationFrame(update);
     });
     ro.observe(el);
@@ -107,7 +135,8 @@ export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCa
         tool,
         color,
         size: brush,
-        points: [pos.x, pos.y],
+        // Duplicate the start point so a single tap renders as a visible dot
+        points: [pos.x, pos.y, pos.x, pos.y],
       },
     ]);
   };
@@ -131,7 +160,7 @@ export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCa
     isDrawingRef.current = false;
   };
 
-  const undo = () => setStrokes((prev) => prev.slice(0, -1));
+  const handleUndo = () => setStrokes((prev) => prev.slice(0, -1));
 
   const handleSave = () => {
     const stage = stageRef.current;
@@ -145,65 +174,38 @@ export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCa
     a.remove();
   };
 
-  const ToolBtn = ({
-    active,
-    onClick,
-    children,
-    label,
-  }: {
-    active?: boolean;
-    onClick: () => void;
-    children: React.ReactNode;
-    label: string;
-  }) => (
-    <Button
-      type="button"
-      variant={active ? "default" : "secondary"}
-      size="sm"
-      onClick={onClick}
-      aria-label={label}
-      className={cn(
-        "rounded-full h-10 px-3 font-bold",
-        active && "galaxy-glow",
-      )}
-    >
-      {children}
-    </Button>
-  );
-
   return (
-    <div className="flex h-full flex-col gap-3">
+    <div className="flex h-full flex-col gap-3 min-w-0">
       {/* Toolbar */}
-      <div className="galaxy-card rounded-2xl p-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-        {/* Tools */}
-        <div className="flex items-center gap-1.5">
-          <ToolBtn active={tool === "pen"} onClick={() => setTool("pen")} label="Pen">
-            <Pencil className="mr-1 h-4 w-4" /> Pen
-          </ToolBtn>
-          <ToolBtn active={tool === "eraser"} onClick={() => setTool("eraser")} label="Eraser">
-            <Eraser className="mr-1 h-4 w-4" /> Eraser
-          </ToolBtn>
-          <ToolBtn
-            active={false}
-            onClick={undo}
-            label="Undo"
+      <div className="galaxy-card rounded-2xl p-3 flex flex-wrap items-center gap-x-3 gap-y-2 min-w-0">
+        {/* Tool buttons */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          <ToolButton active={tool === "pen"} onClick={() => setTool("pen")} label="Pen">
+            <Pencil className="h-4 w-4" /> Pen
+          </ToolButton>
+          <ToolButton
+            active={tool === "eraser"}
+            onClick={() => setTool("eraser")}
+            label="Eraser"
           >
-            <Undo2 className="mr-1 h-4 w-4" /> Undo
-          </ToolBtn>
-          <ToolBtn
-            active={false}
-            onClick={() => setConfirmClear(true)}
-            label="Clear"
-          >
-            <Trash2 className="mr-1 h-4 w-4" /> Clear
-          </ToolBtn>
-          <ToolBtn active={false} onClick={handleSave} label="Save">
-            <Download className="mr-1 h-4 w-4" /> Save
-          </ToolBtn>
+            <Eraser className="h-4 w-4" /> Eraser
+          </ToolButton>
+          <ToolButton onClick={handleUndo} label="Undo">
+            <Undo2 className="h-4 w-4" /> Undo
+          </ToolButton>
+          <ToolButton onClick={() => setConfirmClear(true)} label="Clear">
+            <Trash2 className="h-4 w-4" /> Clear
+          </ToolButton>
+          <ToolButton onClick={handleSave} label="Save">
+            <Download className="h-4 w-4" /> Save
+          </ToolButton>
         </div>
 
+        {/* Divider */}
+        <div className="h-8 w-px bg-[var(--galaxy-teal)]/20 mx-1 hidden md:block" />
+
         {/* Colors */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-1.5">
           {COLORS.map((c) => (
             <button
               key={c.value}
@@ -215,9 +217,9 @@ export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCa
               aria-label={c.name}
               title={c.name}
               className={cn(
-                "h-7 w-7 rounded-full border-2 transition-all",
+                "h-7 w-7 rounded-full border-2 transition-all shrink-0",
                 color === c.value && tool === "pen"
-                  ? "ring-2 ring-offset-2 ring-offset-background ring-[var(--galaxy-teal)] scale-110"
+                  ? "ring-2 ring-offset-2 ring-offset-background ring-[var(--galaxy-teal)] scale-110 border-white"
                   : "border-white/40 hover:scale-110",
               )}
               style={{ backgroundColor: c.value }}
@@ -235,18 +237,17 @@ export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCa
               aria-label={`Brush ${s.name}`}
               title={s.name}
               className={cn(
-                "flex h-9 w-9 items-center justify-center rounded-full border transition-all",
+                "flex h-9 w-9 items-center justify-center rounded-full border transition-all shrink-0",
                 brush === s.value
                   ? "bg-primary/20 border-primary galaxy-glow"
                   : "bg-card/40 border-border hover:bg-card/70",
               )}
             >
               <span
-                className="block rounded-full"
+                className="block rounded-full bg-foreground"
                 style={{
                   width: Math.min(s.value, 18),
                   height: Math.min(s.value, 18),
-                  backgroundColor: "var(--foreground)",
                 }}
               />
             </button>
@@ -257,7 +258,7 @@ export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCa
       {/* Canvas */}
       <div
         ref={containerRef}
-        className="relative flex-1 overflow-hidden rounded-3xl border-2 border-[var(--galaxy-teal)]/30 bg-[#fdfaf3] galaxy-glow"
+        className="relative flex-1 overflow-hidden rounded-3xl border-2 border-[var(--galaxy-teal)]/30 bg-[#fdfaf3] galaxy-glow min-h-[300px]"
         style={{ touchAction: "none" }}
       >
         <Stage
@@ -277,16 +278,18 @@ export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCa
               <Line
                 key={s.id}
                 points={s.points}
-                stroke={s.color}
-                strokeWidth={s.tool === "eraser" ? s.size * 2 : s.size}
-                tension={0.4}
+                stroke={s.tool === "eraser" ? "#000" : s.color}
+                strokeWidth={s.tool === "eraser" ? s.size * 2.5 : s.size}
                 lineCap="round"
                 lineJoin="round"
+                tension={0.3}
                 globalCompositeOperation={
                   s.tool === "eraser" ? "destination-out" : "source-over"
                 }
               />
             ))}
+            {/* Invisible circle ensures Stage has a hit area even before drawing */}
+            <Circle x={-100} y={-100} radius={1} opacity={0} />
           </Layer>
         </Stage>
       </div>
