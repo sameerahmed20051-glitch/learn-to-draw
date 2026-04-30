@@ -1,82 +1,84 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 
 /**
- * Custom hook for Text-to-Speech (TTS) using Web Speech API.
- * Optimized for a friendly female voice at a slow pace for kids.
+ * Advanced Speech Hook for Custom MP3 Audio.
+ * This version uses pre-recorded high-quality audio files
+ * for a consistent, professional "calm" tone across all devices.
  */
 export function useSpeech() {
-  const [voicesLoaded, setVoicesLoaded] = useState(false);
-  const femaleVoiceRef = useRef<SpeechSynthesisVoice | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  
+  // Cache for preloaded Audio objects to ensure instant playback
+  const audioCache = useRef<Map<string, HTMLAudioElement>>(new Map());
 
-  // Helper to find a friendly female voice
-  const findFemaleVoice = useCallback(() => {
-    if (typeof window === "undefined" || !window.speechSynthesis) return null;
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length === 0) return null;
-
-    // Strategy to find a friendly female voice
-    // 1. Look for specific high-quality voices (Google, Apple)
-    // 2. Look for "female" or "woman" in the name
-    // 3. Look for common female names (Samantha, Victoria, Zira, Karen, Moira)
-    return (
-      voices.find((v) => v.name.includes("Google UK English Female")) ||
-      voices.find((v) => v.name.includes("Google US English Female")) ||
-      voices.find((v) => v.name.toLowerCase().includes("female")) ||
-      voices.find((v) => v.name.includes("Samantha")) ||
-      voices.find((v) => v.name.includes("Victoria")) ||
-      voices.find((v) => v.name.includes("Zira")) ||
-      voices.find((v) => v.name.includes("Karen")) ||
-      voices.find((v) => v.name.includes("Moira")) ||
-      voices.find((v) => v.lang.startsWith("en") && !v.name.toLowerCase().includes("male")) ||
-      voices[0] // Fallback to first available if all else fails
-    );
+  /**
+   * Pre-loads an audio file into memory.
+   * Best called when a lesson starts to prepare all step audios.
+   */
+  const preloadAudio = useCallback((url: string) => {
+    if (audioCache.current.has(url)) return;
+    
+    const audio = new Audio();
+    audio.src = url;
+    audio.load();
+    audioCache.current.set(url, audio);
   }, []);
 
-  // Initialize and listen for voices
-  useEffect(() => {
-    if (typeof window === "undefined" || !window.speechSynthesis) return;
-
-    const loadVoices = () => {
-      const voice = findFemaleVoice();
-      if (voice) {
-        femaleVoiceRef.current = voice;
-        setVoicesLoaded(true);
-      }
-    };
-
-    loadVoices();
-    if (window.speechSynthesis.onvoiceschanged !== undefined) {
-      window.speechSynthesis.onvoiceschanged = loadVoices;
+  /**
+   * Plays a specific audio file (either from cache or URL).
+   */
+  const playAudio = useCallback((url: string) => {
+    // Stop any current playback
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
     }
-  }, [findFemaleVoice]);
 
-  const speak = useCallback((text: string) => {
-    if (typeof window === "undefined" || !window.speechSynthesis) return;
+    let audio = audioCache.current.get(url);
 
-    // Cancel any ongoing speech
-    window.speechSynthesis.cancel();
+    if (!audio) {
+      audio = new Audio(url);
+      audioCache.current.set(url, audio);
+    }
 
-    const utterance = new SpeechSynthesisUtterance(text);
+    /**
+     * CALM TONE PRESERVATION:
+     * We can still adjust the playbackRate of our custom MP3s 
+     * if we want them even slower/calmer.
+     */
+    audio.playbackRate = 1.0; 
     
-    // Ensure we have a voice, or try to get one last-second
-    const voice = femaleVoiceRef.current || findFemaleVoice();
-    if (voice) {
-      utterance.voice = voice;
-    }
-
-    // Slow pace for kids (0.7 - 0.8 is usually good)
-    utterance.rate = 0.8;
-    // Slightly higher pitch for a friendlier tone
-    utterance.pitch = 1.1;
-
-    window.speechSynthesis.speak(utterance);
-  }, [findFemaleVoice]);
+    audioRef.current = audio;
+    audio.play().catch(err => {
+      console.warn("Audio playback failed (interaction required?):", err);
+    });
+  }, []);
 
   const stop = useCallback(() => {
-    if (typeof window !== "undefined" && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
     }
   }, []);
 
-  return { speak, stop, voicesLoaded };
+  /**
+   * FALLBACK: Web Speech API (for development or missing files)
+   */
+  const speakFallback = useCallback((text: string) => {
+    if (typeof window === "undefined" || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const voices = window.speechSynthesis.getVoices();
+    utterance.voice = voices.find(v => v.name.includes('Google') || v.name.includes('Female')) || voices[0];
+    utterance.rate = 0.75;
+    utterance.pitch = 0.9;
+    window.speechSynthesis.speak(utterance);
+  }, []);
+
+  return { 
+    playAudio, 
+    preloadAudio, 
+    stop, 
+    speakFallback 
+  };
 }

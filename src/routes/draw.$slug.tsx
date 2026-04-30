@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getLesson, lessons } from "@/lib/lessons";
 import { StepIllustration } from "@/components/StepIllustration";
 import { CelebrationModal } from "@/components/CelebrationModal";
@@ -60,7 +60,7 @@ export const Route = createFileRoute("/draw/$slug")({
       <div className="galaxy-card rounded-3xl p-8">
         <h1 className="font-display text-3xl font-black">Lesson not found 😅</h1>
         <Link
-          to="/"
+          to="/lessons"
           className="mt-4 inline-block rounded-full bg-primary text-primary-foreground px-5 py-2 font-bold"
         >
           Back to lessons
@@ -74,25 +74,52 @@ function DrawPage() {
   const { lesson } = Route.useLoaderData();
   const [stepIndex, setStepIndex] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
-  const canvasRef = useRef<any>(null); // Use any for the lazy ref or define type elsewhere
-  const { speak, stop, voicesLoaded } = useSpeech();
+  const canvasRef = useRef<any>(null);
+  
+  // Use advanced file-based speech hook
+  const { playAudio, preloadAudio, stop, speakFallback } = useSpeech();
 
   const step = lesson.steps[stepIndex];
   const isLast = stepIndex === lesson.steps.length - 1;
   const isFirst = stepIndex === 0;
 
-  // Speak instruction when step changes
+  // Preload all audio files for this lesson on mount
   useEffect(() => {
-    if (!showCelebration && voicesLoaded) {
-      speak(`${step.title}. ${step.instruction}`);
+    lesson.steps.forEach((_, index) => {
+      preloadAudio(`/audio/${lesson.slug}/step-${index + 1}.mp3`);
+    });
+  }, [lesson, preloadAudio]);
+
+  /**
+   * PLAY INSTRUCTION:
+   * Constructs path to MP3 file for current step.
+   */
+  const handlePlayInstruction = useCallback(() => {
+    const audioPath = `/audio/${lesson.slug}/step-${stepIndex + 1}.mp3`;
+    
+    // We try to play the MP3 first
+    playAudio(audioPath);
+    
+    /**
+     * FALLBACK LOGIC:
+     * If you haven't uploaded the MP3s yet, we can use the high-quality 
+     * synthetic WaveNet fallback.
+     */
+    // speakFallback(`${step.title}. ${step.instruction}`);
+  }, [lesson.slug, stepIndex, playAudio]);
+
+  // Auto-play instruction when step changes
+  useEffect(() => {
+    if (!showCelebration) {
+      handlePlayInstruction();
     } else {
       stop();
     }
     return () => stop();
-  }, [stepIndex, step.title, step.instruction, speak, stop, showCelebration, voicesLoaded]);
+  }, [stepIndex, handlePlayInstruction, stop, showCelebration]);
 
   const handleRepeat = () => {
-    speak(`${step.title}. ${step.instruction}`);
+    handlePlayInstruction();
   };
 
   const goNext = () => {
@@ -126,7 +153,7 @@ function DrawPage() {
 
       {/* Top bar */}
       <header className="relative flex items-center justify-between px-4 py-3 border-b border-[var(--galaxy-teal)]/20 bg-card/40 backdrop-blur">
-        <Link to="/">
+        <Link to="/lessons">
           <Button variant="secondary" size="lg" className="rounded-full font-bold">
             <HomeIcon className="mr-1 h-5 w-5" /> Lessons
           </Button>
