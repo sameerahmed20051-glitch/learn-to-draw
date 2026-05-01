@@ -7,7 +7,7 @@ import { lazy, Suspense } from "react";
 
 const KonvaCanvas = lazy(() => import("@/components/KonvaCanvas").then(m => ({ default: m.KonvaCanvas })));
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Home as HomeIcon, PartyPopper, Volume2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Home as HomeIcon, PartyPopper, Volume2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSpeech } from "@/hooks/use-speech";
 
@@ -264,17 +264,6 @@ function DrawPage() {
               </div>
             )}
 
-            {isLast && (
-              <div className="mt-5 rounded-2xl bg-primary/10 border border-primary/40 p-4 flex items-center gap-3 galaxy-glow">
-                <PartyPopper className="h-8 w-8 text-primary shrink-0" />
-                <div>
-                  <div className="font-display font-extrabold">Almost done!</div>
-                  <div className="text-sm text-muted-foreground">
-                    Tap "Finish" to celebrate your art!
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </aside>
 

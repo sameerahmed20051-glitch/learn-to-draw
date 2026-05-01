@@ -9,13 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LessonsRouteImport } from './routes/lessons'
+import { Route as English_lessonRouteImport } from './routes/english_lesson'
+import { Route as Drawing_gamesRouteImport } from './routes/drawing_games'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DrawSlugRouteImport } from './routes/draw.$slug'
 
-const LessonsRoute = LessonsRouteImport.update({
-  id: '/lessons',
-  path: '/lessons',
+const English_lessonRoute = English_lessonRouteImport.update({
+  id: '/english_lesson',
+  path: '/english_lesson',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Drawing_gamesRoute = Drawing_gamesRouteImport.update({
+  id: '/drawing_games',
+  path: '/drawing_games',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -31,41 +37,52 @@ const DrawSlugRoute = DrawSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/lessons': typeof LessonsRoute
+  '/drawing_games': typeof Drawing_gamesRoute
+  '/english_lesson': typeof English_lessonRoute
   '/draw/$slug': typeof DrawSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/lessons': typeof LessonsRoute
+  '/drawing_games': typeof Drawing_gamesRoute
+  '/english_lesson': typeof English_lessonRoute
   '/draw/$slug': typeof DrawSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/lessons': typeof LessonsRoute
+  '/drawing_games': typeof Drawing_gamesRoute
+  '/english_lesson': typeof English_lessonRoute
   '/draw/$slug': typeof DrawSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/lessons' | '/draw/$slug'
+  fullPaths: '/' | '/drawing_games' | '/english_lesson' | '/draw/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/lessons' | '/draw/$slug'
-  id: '__root__' | '/' | '/lessons' | '/draw/$slug'
+  to: '/' | '/drawing_games' | '/english_lesson' | '/draw/$slug'
+  id: '__root__' | '/' | '/drawing_games' | '/english_lesson' | '/draw/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LessonsRoute: typeof LessonsRoute
+  Drawing_gamesRoute: typeof Drawing_gamesRoute
+  English_lessonRoute: typeof English_lessonRoute
   DrawSlugRoute: typeof DrawSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/lessons': {
-      id: '/lessons'
-      path: '/lessons'
-      fullPath: '/lessons'
-      preLoaderRoute: typeof LessonsRouteImport
+    '/english_lesson': {
+      id: '/english_lesson'
+      path: '/english_lesson'
+      fullPath: '/english_lesson'
+      preLoaderRoute: typeof English_lessonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drawing_games': {
+      id: '/drawing_games'
+      path: '/drawing_games'
+      fullPath: '/drawing_games'
+      preLoaderRoute: typeof Drawing_gamesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -87,7 +104,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LessonsRoute: LessonsRoute,
+  Drawing_gamesRoute: Drawing_gamesRoute,
+  English_lessonRoute: English_lessonRoute,
   DrawSlugRoute: DrawSlugRoute,
 }
 export const routeTree = rootRouteImport

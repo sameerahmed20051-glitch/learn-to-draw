@@ -10,29 +10,35 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Pencil, Eraser, Undo2, Trash2, Download } from "lucide-react";
+import { Pencil, Eraser, Undo2, Trash2, Download, Brush, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const COLORS = [
   { name: "Black", value: "#1a1a2e" },
   { name: "White", value: "#ffffff" },
   { name: "Red", value: "#ef4444" },
-  { name: "Orange", value: "#f97316" },
-  { name: "Yellow", value: "#facc15" },
-  { name: "Green", value: "#22c55e" },
-  { name: "Blue", value: "#3b82f6" },
+  { name: "Hot Pink", value: "#f472b6" },
   { name: "Purple", value: "#a855f7" },
-  { name: "Pink", value: "#ec4899" },
+  { name: "Indigo", value: "#6366f1" },
+  { name: "Blue", value: "#3b82f6" },
+  { name: "Sky", value: "#0ea5e9" },
+  { name: "Teal", value: "#14b8a6" },
+  { name: "Green", value: "#22c55e" },
+  { name: "Lime", value: "#84cc16" },
+  { name: "Yellow", value: "#facc15" },
+  { name: "Orange", value: "#f97316" },
   { name: "Brown", value: "#92400e" },
 ];
 
 const SIZES = [
-  { name: "Small", value: 4 },
-  { name: "Medium", value: 9 },
-  { name: "Large", value: 18 },
+  { name: "Pencil", value: 4 },
+  { name: "Pen", value: 9 },
+  { name: "Brush", value: 18 },
+  { name: "Marker", value: 35 },
+  { name: "Jumbo", value: 60 },
 ];
 
-type Tool = "pen" | "eraser";
+type Tool = "pen" | "eraser" | "marker";
 
 type Stroke = {
   id: string;
@@ -223,6 +229,7 @@ export const KonvaCanvas = forwardRef<KonvaCanvasHandle, Props>(function KonvaCa
                 points={s.points}
                 stroke={s.tool === "eraser" ? "#000" : s.color}
                 strokeWidth={s.tool === "eraser" ? s.size * 2.5 : s.size}
+                opacity={s.tool === "marker" ? 0.5 : 1}
                 lineCap="round"
                 lineJoin="round"
                 tension={0}
@@ -293,14 +300,18 @@ const DrawingToolbar = memo(function DrawingToolbar({
   setConfirmClear,
 }: DrawingToolbarProps) {
   return (
-    <div className="galaxy-card rounded-2xl p-2 sm:p-4 flex flex-wrap items-center gap-x-4 gap-y-3 min-w-0 shadow-xl border-t border-white/5">
-      <div className="flex flex-wrap items-center gap-2">
+    <div className="galaxy-card rounded-2xl p-2 sm:p-4 flex flex-col lg:flex-row items-center gap-x-4 gap-y-3 min-w-0 shadow-xl border-t border-white/5">
+      <div className="flex flex-wrap items-center justify-center gap-2">
         <ToolButton active={tool === "pen"} onClick={() => setTool("pen")} label="Pen">
           <Pencil className="h-4 w-4" /> <span className="hidden xs:inline">Pen</span>
+        </ToolButton>
+        <ToolButton active={tool === "marker"} onClick={() => setTool("marker")} label="Marker">
+          <Brush className="h-4 w-4" /> <span className="hidden xs:inline">Marker</span>
         </ToolButton>
         <ToolButton active={tool === "eraser"} onClick={() => setTool("eraser")} label="Eraser">
           <Eraser className="h-4 w-4" /> <span className="hidden xs:inline">Eraser</span>
         </ToolButton>
+        <div className="h-8 w-px bg-[var(--galaxy-teal)]/20 mx-1" />
         <div className="flex items-center gap-2">
           <ToolButton onClick={handleUndo} label="Undo">
             <Undo2 className="h-4 w-4" />
@@ -316,27 +327,28 @@ const DrawingToolbar = memo(function DrawingToolbar({
 
       <div className="h-8 w-px bg-[var(--galaxy-teal)]/20 mx-1 hidden lg:block" />
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center justify-center gap-2 max-w-[400px] lg:max-w-none">
         {COLORS.map((c) => (
           <button
             key={c.value}
             type="button"
             onClick={() => {
               setColor(c.value);
-              setTool("pen");
+              if (tool === "eraser") setTool("pen");
             }}
             className={cn(
               "h-7 w-7 sm:h-8 sm:w-8 rounded-full border-2 transition-all shrink-0 shadow-sm",
-              color === c.value && tool === "pen"
+              color === c.value && tool !== "eraser"
                 ? "ring-2 ring-offset-2 ring-offset-background ring-primary scale-125 border-white z-10"
                 : "border-white/30 hover:scale-115 active:scale-90",
             )}
             style={{ backgroundColor: c.value }}
+            title={c.name}
           />
         ))}
       </div>
 
-      <div className="flex items-center gap-2 ml-auto sm:ml-0">
+      <div className="flex items-center justify-center gap-2 ml-auto lg:ml-0">
         {SIZES.map((s) => (
           <button
             key={s.value}
@@ -345,16 +357,20 @@ const DrawingToolbar = memo(function DrawingToolbar({
             className={cn(
               "flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border-2 transition-all shrink-0",
               brush === s.value
-                ? "bg-primary text-primary-foreground border-primary galaxy-glow scale-105"
+                ? "bg-primary text-primary-foreground border-primary galaxy-glow scale-110"
                 : "bg-card/40 border-border hover:bg-card/60 active:scale-95",
             )}
+            title={s.name}
           >
-            <span
+            <div
               className={cn(
-                "block rounded-full bg-current",
+                "rounded-full bg-current",
                 brush === s.value ? "bg-primary-foreground" : "bg-foreground",
               )}
-              style={{ width: Math.min(s.value, 20), height: Math.min(s.value, 20) }}
+              style={{ 
+                width: Math.max(4, Math.min(s.value / 2, 24)), 
+                height: Math.max(4, Math.min(s.value / 2, 24)) 
+              }}
             />
           </button>
         ))}

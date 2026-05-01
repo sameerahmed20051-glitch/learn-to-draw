@@ -1,7 +1,10 @@
 import os
+import argparse
 from gtts import gTTS
 
-# Full lessons data for audio generation
+# ─────────────────────────────────────────────
+# DRAWING LESSONS
+# ─────────────────────────────────────────────
 lessons = [
     {
         "slug": "elephant",
@@ -11,7 +14,8 @@ lessons = [
             "Step 3 — Big Floppy Ears. Draw two giant floppy ears on each side of the head. Elephants use them like big fans!",
             "Step 4 — Long Curly Trunk. From the middle of the face, draw a long trunk that curves down and curls at the end.",
             "Step 5 — Strong Tusks. Add two pointy white tusks on each side of the trunk.",
-            "Step 6 — Eyes, Legs & Details. Draw two chunky legs at the bottom, two happy eyes, and little wrinkle lines on the trunk."
+            "Step 6 — Eyes, Legs & Details. Draw two chunky legs at the bottom, two happy eyes, and little wrinkle lines on the trunk.",
+            "Step 7 — Time to Color. Amazing elephant! Now use the markers and colors to make it look beautiful."
         ]
     },
     {
@@ -22,7 +26,8 @@ lessons = [
             "Step 3 — Big Eyes & Nose. Draw two big round eyes with little dots inside, and a tiny triangle nose between them.",
             "Step 4 — Smile & Whiskers. Draw a cute W mouth under the nose and three whiskers on each side.",
             "Step 5 — Soft Body & Paws. Draw a U-shape under the head for the body, with two front paws sticking out at the bottom.",
-            "Step 6 — Curly Tail & Stripes. Add a long curly tail behind the body, and a few little curved stripes on the head and body."
+            "Step 6 — Curly Tail & Stripes. Add a long curly tail behind the body, and a few little curved stripes on the head and body.",
+            "Step 7 — Time to Color. What a cute kitty! Now give it some colorful fur and bright eyes."
         ]
     },
     {
@@ -33,7 +38,8 @@ lessons = [
             "Step 3 — Cute Face. Draw two eyes, a triangle nose, and a smiley mouth with a tongue.",
             "Step 4 — Soft Body. Below the head, draw a jellybean-shaped body.",
             "Step 5 — Four Paws. Add four short legs with paws at the bottom.",
-            "Step 6 — Wagging Tail. Draw a curly tail at the back. Now give your puppy a name!"
+            "Step 6 — Wagging Tail. Draw a curly tail at the back. Now give your puppy a name!",
+            "Step 7 — Time to Color. Good dog! Now use your favorite colors to make your puppy happy."
         ]
     },
     {
@@ -44,7 +50,8 @@ lessons = [
             "Step 3 — Top & Bottom Fins. Draw a small fin on top and another on the bottom of the body.",
             "Step 4 — Big Eye. Draw a big circle for the eye on the left side, and a tiny dot inside.",
             "Step 5 — Smile & Gills. Add a little smile under the eye and a curved line for the gills.",
-            "Step 6 — Scales & Bubbles. Add little U shapes for scales and tiny circles for bubbles!"
+            "Step 6 — Scales & Bubbles. Add little U shapes for scales and tiny circles for bubbles!",
+            "Step 7 — Time to Color. Splendid fish! Time to add some underwater magic with your colors."
         ]
     },
     {
@@ -55,7 +62,8 @@ lessons = [
             "Step 3 — Bottom Wings. Add two smaller wings below the top wings.",
             "Step 4 — Antennae. Draw two thin curvy lines on top of the head with little circles at the tips.",
             "Step 5 — Wing Patterns. Add circles and dots on the wings to make them pretty.",
-            "Step 6 — Color Time. Add a little smile to the body and color each wing with rainbow colors!"
+            "Step 6 — Color Time. Add a little smile to the body and color each wing with rainbow colors!",
+            "Step 7 — Time to Color. Beautiful butterfly! Use all the bright colors to make the wings shine."
         ]
     },
     {
@@ -66,7 +74,8 @@ lessons = [
             "Step 3 — Happy Face. Inside the center circle, add two tiny eyes and a big smile!",
             "Step 4 — Stem. Draw a long curvy line going down from the flower. That's the stem!",
             "Step 5 — Leaves. Add two leaves on the stem like ovals with pointy ends.",
-            "Step 6 — Grass. Draw little grass lines at the bottom and color it all in!"
+            "Step 6 — Grass. Draw little grass lines at the bottom and color it all in!",
+            "Step 7 — Time to Color. Lovely flower! Pick your favorite petal colors and make it bloom."
         ]
     },
     {
@@ -77,7 +86,8 @@ lessons = [
             "Step 3 — Door. Add a tall rectangle in the middle for the door.",
             "Step 4 — Windows. Draw two small squares on each side of the door for windows.",
             "Step 5 — Chimney. On top of the roof, draw a small rectangle and little smoke clouds.",
-            "Step 6 — Sun & Grass. Add a sun in the corner and grass at the bottom!"
+            "Step 6 — Sun & Grass. Add a sun in the corner and grass at the bottom!",
+            "Step 7 — Time to Color. Great house! Color the walls, roof, and door to make it your dream home."
         ]
     },
     {
@@ -88,36 +98,181 @@ lessons = [
             "Step 3 — Zoom Across. Draw a straight line all the way across to the right side.",
             "Step 4 — Slide Down. Draw another slanted line going down to the left.",
             "Step 5 — Back to Start. Draw the last line back up to the top where you started!",
-            "Step 6 — Happy Star. Add a happy face inside and little sparkles around. Color it bright yellow!"
+            "Step 6 — Happy Star. Add a happy face inside and little sparkles around. Color it bright yellow!",
+            "Step 7 — Time to Color. Twinkling star! Make it glow with bright yellow or magic rainbow colors."
         ]
     }
 ]
 
-def generate_audio():
-    print("🚀 Starting audio generation for all 8 lessons...")
-    
-    for lesson in lessons:
-        slug = lesson["slug"]
-        print(f"\n📦 Processing lesson: {slug}")
-        
-        path = f"public/audio/{slug}"
+# ─────────────────────────────────────────────
+# ENGLISH LESSON AUDIO — Week 1, Day 1
+# Same voice: UK English female (lang='en', tld='co.uk')
+# ─────────────────────────────────────────────
+english_card_audio = [
+    # Card 1 — Reading Part 1: What is a Sentence?
+    ("card-1-intro",
+     "A sentence should sound like a thought. "
+     "A sentence is not only a row of words. It is one idea. "
+     "The words work together to carry that idea. "
+     "When we read a sentence, we need to hear the whole thought."),
+
+    ("card-1-broken",
+     "Listen to the broken way. The. Dog. Ran. "
+     "The words are right, but the thought sounds broken."),
+
+    ("card-1-smooth",
+     "Now listen to the smooth way. The dog ran. "
+     "That sounds like one thought! Much better!"),
+
+    # Card 2 — Activity 1: Smooth It!
+    ("card-2-intro",
+     "Your turn! Tap the words in the right order to build the sentence. "
+     "When the words sit together, the thought light will turn on!"),
+
+    ("card-2-correct",
+     "Amazing! You did it! The thought light is on! "
+     "The sentence sounds like one clear thought. Well done!"),
+
+    ("card-2-try-again",
+     "Good try! Listen again, and tap the words in the right order. You can do it!"),
+
+    # Card 3 — Reading Part 2: The Basket & The Thought Check
+    ("card-3-intro",
+     "In Year one, many readers read word by word. That is completely normal! "
+     "It means your mind is working hard. You are looking at letters, "
+     "remembering sounds, and blending them together. That is wonderful work! "
+     "But reading must keep growing. A strong reader works out the words, "
+     "then reads again so the words can join."),
+
+    ("card-3-basket",
+     "A sentence is like a small basket. Each word sits inside the basket. "
+     "If the words stay too far apart, the thought may fall out. "
+     "If the words sit together in the right way, the basket can carry the whole thought."),
+
+    ("card-3-check",
+     "A real reader writer asks two important questions. "
+     "First, did I say the words correctly? "
+     "Second, did the sentence say its thought clearly? "
+     "This is called the Thought Check! Use it every time you read."),
+
+    # Card 4 — Activity 2: Tap the Right Way
+    ("card-4-intro",
+     "Listen very carefully. I will read the sentence two ways. "
+     "One way sounds broken. One way sounds like a thought. "
+     "Tap the green button when you hear the one that sounds like a real thought!"),
+
+    ("card-4-correct",
+     "Brilliant! That one sounded like a real thought! "
+     "A real reader writer helps the sentence speak its meaning clearly."),
+
+    ("card-4-try-again",
+     "Listen again. Which one sounds smooth and clear? "
+     "Try once more, you are doing wonderfully!"),
+
+    # Finale
+    ("finale",
+     "Wonderful work today! You are a real reader writer! "
+     "Remember, when a sentence sounds like a thought, the mind can hold it better. "
+     "Keep practising, and see you next time!"),
+]
+
+# Individual words for tap-to-hear feature
+english_words = [
+    "a", "sentence", "should", "sound", "like", "thought", "is", "not", "only", "row", "of", "words", 
+    "it", "one", "idea", "the", "work", "together", "to", "carry", "that", "dog", "ran", "in", "year", 
+    "many", "readers", "read", "word", "by", "completely", "normal", "means", "your", "brain", 
+    "working", "hard", "you", "are", "looking", "at", "letters", "remembering", "sounds", "and", 
+    "blending", "them", "wonderful", "but", "reading", "must", "keep", "growing", "strong", 
+    "reader", "works", "out", "then", "reads", "again", "so", "can", "join", "small", "basket", 
+    "each", "sits", "inside", "if", "stay", "too", "far", "apart", "may", "fall", "sit", 
+    "carries", "whole", "real", "writer", "asks", "two", "important", "questions", "first", 
+    "did", "i", "say", "correctly", "second", "clearly", "this", "called", "check", "use", 
+    "every", "time", "red", "ball", "rolled", "little", "bird", "sang", "practising", "brilliant"
+]
+
+
+def generate_drawing_audio(slug=None):
+    target_lessons = lessons
+    if slug:
+        target_lessons = [l for l in lessons if l["slug"] == slug]
+        if not target_lessons:
+            print(f"Error: Drawing lesson '{slug}' not found.")
+            return
+
+    print(f"Starting drawing audio for {len(target_lessons)} lesson(s)...")
+
+    for lesson in target_lessons:
+        s = lesson["slug"]
+        print(f"\nProcessing: {s}")
+        path = f"public/audio/{s}"
         if not os.path.exists(path):
             os.makedirs(path)
-            
+
         for i, text in enumerate(lesson["steps"]):
-            step_num = i + 1
-            filename = f"{path}/step-{step_num}.mp3"
-            
-            # Using UK English for a calm, pleasant educational tone
+            filename = f"{path}/step-{i + 1}.mp3"
+            if os.path.exists(filename):
+                print(f"  Skipping: {filename}")
+                continue
             tts = gTTS(text=text, lang='en', tld='co.uk')
             tts.save(filename)
-            print(f"  ✅ Saved: {filename}")
-            
-    print("\n🎉 SUCCESS! All audio files are ready in public/audio/")
+            print(f"  Saved: {filename}")
+
+    print("\nDone! Drawing audio ready in public/audio/")
+
+
+def generate_english_audio(force=False):
+    print("\nGenerating English lesson audio...")
+    base = "public/audio/english"
+
+    if not os.path.exists(base):
+        os.makedirs(base)
+
+    # Card narration files
+    for (name, text) in english_card_audio:
+        filename = f"{base}/{name}.mp3"
+        if os.path.exists(filename) and not force:
+            print(f"  Skipping: {filename}")
+            continue
+        tts = gTTS(text=text, lang='en', tld='co.uk')
+        tts.save(filename)
+        print(f"  Saved: {filename}")
+
+    # Individual word files
+    words_path = f"{base}/words"
+    if not os.path.exists(words_path):
+        os.makedirs(words_path)
+
+    for word in english_words:
+        filename = f"{words_path}/{word}.mp3"
+        if os.path.exists(filename) and not force:
+            print(f"  Skipping word: {word}")
+            continue
+        tts = gTTS(text=word, lang='en', tld='co.uk')
+        tts.save(filename)
+        print(f"  Saved word: {filename}")
+
+    print("\nDone! English lesson audio ready in public/audio/english/")
+
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Generate audio for drawing and English lessons (UK English female voice)."
+    )
+    parser.add_argument(
+        'target', nargs='?',
+        help="Lesson slug (e.g. 'elephant'), 'english', or leave blank for ALL"
+    )
+    parser.add_argument('--force', action='store_true', help='Force regeneration of existing files')
+    args = parser.parse_args()
+
     try:
-        generate_audio()
+        if args.target == "english":
+            generate_english_audio(force=args.force)
+        elif args.target:
+            generate_drawing_audio(slug=args.target)
+        else:
+            generate_drawing_audio()
+            generate_english_audio(force=args.force)
     except Exception as e:
-        print(f"\n❌ Error: {e}")
-        print("Please run: pip install gTTS")
+        print(f"\nError: {e}")
+        print("Make sure gTTS is installed: pip install gTTS")

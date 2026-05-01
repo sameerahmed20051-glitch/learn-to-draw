@@ -79,6 +79,11 @@ export const lessons: Lesson[] = [
                 <line x1="96" y1="116" x2="104" y2="116" stroke="currentColor" stroke-width="2" opacity="0.6"/>
                 <line x1="96" y1="130" x2="104" y2="130" stroke="currentColor" stroke-width="2" opacity="0.6"/>`,
       },
+      {
+        title: "Step 7 — Time to Color",
+        instruction: "Amazing elephant! Now use the markers and colors to make it look beautiful.",
+        layer: "",
+      },
     ],
   },
   {
@@ -136,10 +141,14 @@ export const lessons: Lesson[] = [
       {
         title: "Step 6 — Curly Tail & Stripes",
         instruction: "Add a long curly tail behind the body, and a few little curved stripes on the head and body.",
-        tip: "Color your kitty orange, gray, or any color you love!",
         layer: `<path d="M130 150 Q 165 145, 168 110 Q 168 95, 155 98" ${S}/>
                 <path d="M76 65 q 4 -2 8 0 M120 65 q 4 -2 8 0" ${S}/>
                 <path d="M90 135 q 5 -2 10 0 M105 145 q 5 -2 10 0" ${S}/>`,
+      },
+      {
+        title: "Step 7 — Time to Color",
+        instruction: "What a cute kitty! Now give it some colorful fur and bright eyes.",
+        layer: "",
       },
     ],
   },
@@ -187,6 +196,11 @@ export const lessons: Lesson[] = [
         instruction: "Draw a curly tail at the back. Now give your puppy a name!",
         layer: `<path d="M140 145 Q 165 130, 160 110" ${S}/>`,
       },
+      {
+        title: "Step 7 — Time to Color",
+        instruction: "Good dog! Now use your favorite colors to make your puppy happy.",
+        layer: "",
+      },
     ],
   },
   {
@@ -229,12 +243,16 @@ export const lessons: Lesson[] = [
       {
         title: "Step 6 — Scales & Bubbles",
         instruction: "Add little U shapes for scales and tiny circles for bubbles!",
-        tip: "Color it bright orange or rainbow!",
         layer: `<path d="M95 95 Q 100 100, 95 105" ${S}/>
                 <path d="M110 95 Q 115 100, 110 105" ${S}/>
                 <path d="M125 95 Q 130 100, 125 105" ${S}/>
                 <circle cx="35" cy="60" r="3" ${S}/>
                 <circle cx="25" cy="45" r="2" ${S}/>`,
+      },
+      {
+        title: "Step 7 — Time to Color",
+        instruction: "Splendid fish! Time to add some underwater magic with your colors.",
+        layer: "",
       },
     ],
   },
@@ -288,6 +306,11 @@ export const lessons: Lesson[] = [
                 <circle cx="103" cy="72" r="1.5" fill="currentColor"/>
                 <path d="M96 80 Q 100 84, 104 80" ${S}/>`,
       },
+      {
+        title: "Step 7 — Time to Color",
+        instruction: "Beautiful butterfly! Use all the bright colors to make the wings shine.",
+        layer: "",
+      },
     ],
   },
   {
@@ -334,8 +357,12 @@ export const lessons: Lesson[] = [
       {
         title: "Step 6 — Grass",
         instruction: "Draw little grass lines at the bottom and color it all in!",
-        tip: "Pink petals, green stem, yellow center!",
         layer: `<path d="M60 188 L 65 178 M70 188 L 75 178 M80 188 L 85 178 M95 188 L 100 178 M110 188 L 115 178 M120 188 L 125 178 M130 188 L 135 178" ${S}/>`,
+      },
+      {
+        title: "Step 7 — Time to Color",
+        instruction: "Lovely flower! Pick your favorite petal colors and make it bloom.",
+        layer: "",
       },
     ],
   },
@@ -382,10 +409,14 @@ export const lessons: Lesson[] = [
       {
         title: "Step 6 — Sun & Grass",
         instruction: "Add a sun in the corner and grass at the bottom!",
-        tip: "Color it however you like!",
         layer: `<circle cx="25" cy="25" r="10" ${S}/>
                 <path d="M25 8 V 2 M25 42 V 48 M8 25 H 2 M42 25 H 48" ${S}/>
                 <path d="M30 188 L 35 180 M45 188 L 50 180 M160 188 L 165 180 M175 188 L 180 180" ${S}/>`,
+      },
+      {
+        title: "Step 7 — Time to Color",
+        instruction: "Great house! Color the walls, roof, and door to make it your dream home.",
+        layer: "",
       },
     ],
   },
@@ -437,6 +468,11 @@ export const lessons: Lesson[] = [
                 <path d="M88 118 Q 100 128, 112 118" ${S}/>
                 <path d="M180 30 L 185 35 M190 25 L 185 30" ${S}/>
                 <path d="M15 50 L 20 55 M25 45 L 20 50" ${S}/>`,
+      },
+      {
+        title: "Step 7 — Time to Color",
+        instruction: "Twinkling star! Make it glow with bright yellow or magic rainbow colors.",
+        layer: "",
       },
     ],
   },
