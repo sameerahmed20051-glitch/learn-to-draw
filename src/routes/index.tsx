@@ -49,7 +49,7 @@ function LandingPage() {
             </div>
           </Link>
 
-          <Link to="/draw/lion" className="group">
+          <Link to="/draw/$slug" params={{ slug: "elephant" }} className="group">
             <div className="liquid-glass p-12 flex flex-col items-center gap-8 transition-all duration-500 hover:scale-[1.02] hover:neon-border hover:shadow-[0_0_40px_rgba(191,100,50,0.2)] h-full">
               <div className="w-24 h-24 rounded-3xl bg-primary/20 flex items-center justify-center border border-primary/30 shadow-[0_0_20px_rgba(191,100,50,0.2)] transition-transform group-hover:-rotate-12">
                 <Palette className="h-12 w-12 text-primary" />
