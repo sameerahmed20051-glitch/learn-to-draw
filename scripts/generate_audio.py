@@ -109,22 +109,27 @@ lessons = [
 # Same voice: UK English female (lang='en', tld='co.uk')
 # ─────────────────────────────────────────────
 english_card_audio = [
-    # Card 1 — Reading Part 1: What is a Sentence?
-    ("card-1-intro",
-     "A sentence should sound like a thought. "
-     "A sentence is not only a row of words. It is one idea. "
-     "The words work together to carry that idea. "
-     "When we read a sentence, we need to hear the whole thought."),
+    # Card 1 — Whole Reading Part 1
+    ("part1-reading",
+     "A sentence should sound like a thought. A sentence is not only a row of words. It is one idea. "
+     "The words work together to carry that idea. When we read a sentence, we need to hear the whole thought. "
+     "Look at this sentence: The dog ran. If we read it like this: The. Dog. Ran. The words are right, but the thought sounds broken. "
+     "Now read it like this: The dog ran. Now it sounds more like one thought. "
+     "A Real Reader-Writer knows that careful reading comes first. We do not rush. We do not guess. "
+     "We read the words from the print. After we read the words, we can read the sentence again "
+     "so the thought can come through. "
+     "In Year 1, many readers begin by reading word by word. That is normal. It means the mind is working hard. "
+     "The reader is looking at letters, remembering sounds, blending, and checking. That is good work! "
+     "But reading must keep growing. A weak reader stops at every word. A strong reader works out the words, "
+     "then reads again so the words can join. This is careful reading becoming smoother."),
 
-    ("card-1-broken",
-     "Listen to the broken way. The. Dog. Ran. "
-     "The words are right, but the thought sounds broken."),
+    # Card 2 — The Dog Ran Example
+    ("card-1-dog",
+     "Look at this sentence: The dog ran. "
+     "If we read it like this: The. Dog. Ran. The words are right, but the thought sounds broken. "
+     "Now read it like this: The dog ran. Now it sounds more like one thought."),
 
-    ("card-1-smooth",
-     "Now listen to the smooth way. The dog ran. "
-     "That sounds like one thought! Much better!"),
-
-    # Card 2 — Activity 1: Smooth It!
+    # Card 3 — Activity 1: Smooth It!
     ("card-2-intro",
      "Your turn! Tap the words in the right order to build the sentence. "
      "When the words sit together, the thought light will turn on!"),
@@ -133,47 +138,89 @@ english_card_audio = [
      "Amazing! You did it! The thought light is on! "
      "The sentence sounds like one clear thought. Well done!"),
 
+    # Card 3 — Whole Reading Part 2
+    ("part2-reading",
+     "A sentence is like a small basket. Each word sits inside the basket. "
+     "If the words stay too far apart, the thought may fall out. "
+     "If the words sit together in the right way, the basket can carry the whole thought. "
+     "A real reader writer asks two important questions. First, did I say the words correctly? "
+     "Second, did the sentence say its thought clearly? This question helps reading grow! "
+     "When a sentence sounds like a thought, the mind can hold it better. "
+     "The reader can understand more. The listener can understand more too. "
+     "If you read in a broken way, the listener may hear the words, but the meaning is hard to hold. "
+     "If you read clearly and smoothly, the listener can follow the thought. "
+     "Now, a Moment to Picture. Close your eyes. Listen to this: The little bird sang. "
+     "Can you picture one thought? Imagine words falling away. It is harder to hold! "
+     "Rereading is not weak. It helps the line carry meaning. "
+     "Today, let the sentence sound like a thought."),
+
     ("card-2-try-again",
      "Good try! Listen again, and tap the words in the right order. You can do it!"),
 
-    # Card 3 — Reading Part 2: The Basket & The Thought Check
+    # Card 4 — Careful Reading
+    ("card-careful",
+     "A Real Reader-Writer knows that careful reading comes first. We do not rush. We do not guess. "
+     "We read the words from the print. But after we read the words, we can read the sentence again "
+     "so the thought can come through."),
+
+    # Card 5 — Year 1 Normality
     ("card-3-intro",
      "In Year one, many readers read word by word. That is completely normal! "
      "It means your mind is working hard. You are looking at letters, "
-     "remembering sounds, and blending them together. That is wonderful work! "
-     "But reading must keep growing. A strong reader works out the words, "
-     "then reads again so the words can join."),
+     "remembering sounds, blending, and checking. That is wonderful work!"),
 
+    # Card 6 — Growth
+    ("card-growth",
+     "But reading must keep growing. A weak reader may stop at every word and never help "
+     "the sentence speak. A strong reader works out the words, then reads again so the "
+     "words can join. This is careful reading becoming smoother."),
+
+    # Card 7 — The Basket
     ("card-3-basket",
      "A sentence is like a small basket. Each word sits inside the basket. "
      "If the words stay too far apart, the thought may fall out. "
      "If the words sit together in the right way, the basket can carry the whole thought."),
 
+    # Card 9 — Thought Check Questions
     ("card-3-check",
      "A real reader writer asks two important questions. "
      "First, did I say the words correctly? "
      "Second, did the sentence say its thought clearly? "
-     "This is called the Thought Check! Use it every time you read."),
+     "This question helps reading grow!"),
 
-    # Card 4 — Activity 2: Tap the Right Way
-    ("card-4-intro",
-     "Listen very carefully. I will read the sentence two ways. "
-     "One way sounds broken. One way sounds like a thought. "
-     "Tap the green button when you hear the one that sounds like a real thought!"),
+    # Card 10 — Holding the Meaning
+    ("card-hold",
+     "When a sentence sounds like a thought, the mind can hold it better. "
+     "The reader can understand more. The listener can understand more too. "
+     "This matters when you read quietly, and when you read aloud."),
 
-    ("card-4-correct",
-     "Brilliant! That one sounded like a real thought! "
-     "A real reader writer helps the sentence speak its meaning clearly."),
+    # Card 11 — Listener
+    ("card-listen",
+     "If you read in a very broken way, the listener may hear the words, but the meaning "
+     "may feel hard to hold. If you read clearly and smoothly, the listener can follow the thought."),
 
-    ("card-4-try-again",
-     "Listen again. Which one sounds smooth and clear? "
-     "Try once more, you are doing wonderfully!"),
+    # Card 12 — Picture It!
+    ("card-picture",
+     "A Moment to Picture. Close your eyes for a short moment. Listen to this: "
+     "The little bird sang. Can you picture one thought? Now imagine every word "
+     "falling far away from the others. It is harder to hold!"),
+
+    # Card 14 — Thought Light
+    ("card-light",
+     "Today, use the Thought Check. Read carefully. Read again. "
+     "Ask: Did it sound like one thought? Did it make sense? "
+     "In your mind, picture a little thought light!"),
+
+    # Card 15 — Meaning
+    ("card-meaning",
+     "If it still sounds broken, read it again calmly. Rereading is not weak. "
+     "Rereading helps the sentence speak. Help the line carry meaning. "
+     "Today, let the sentence sound like a thought."),
 
     # Finale
     ("finale",
      "Wonderful work today! You are a real reader writer! "
-     "Remember, when a sentence sounds like a thought, the mind can hold it better. "
-     "Keep practising, and see you next time!"),
+     "You helped the line carry meaning. Keep practising, and see you next time!"),
 ]
 
 # Individual words for tap-to-hear feature

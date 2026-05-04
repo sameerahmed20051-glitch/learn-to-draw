@@ -1,209 +1,76 @@
-@import "tailwindcss" source(none);
-@source "../src";
-@import "tw-animate-css";
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
 
-@custom-variant dark (&:is(.dark *));
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@font-face {
-  font-family: "Orbitron";
-  src: local("Orbitron");
-}
+@theme {
+  --font-display: "Space Grotesk", "system-ui", "sans-serif";
+  --font-body: "Inter", "system-ui", "sans-serif";
+  --font-orbitron: "Orbitron", "sans-serif";
+  --font-rajdhani: "Rajdhani", "sans-serif";
 
-@theme inline {
-  --font-display: "Orbitron", "Nunito", system-ui, sans-serif;
-  --font-sans: "Nunito", system-ui, sans-serif;
+  --color-background: hsl(210 67% 1%);
+  --color-foreground: hsl(0 0% 100%);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+  --color-card: hsl(215 35% 7%);
+  --color-card-foreground: hsl(0 0% 100%);
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-ring-offset-background: var(--background);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-primary: hsl(191 100% 50%);
+  --color-primary-foreground: hsl(210 67% 2%);
 
-  --color-galaxy-teal: var(--galaxy-teal);
-  --color-galaxy-cyan: var(--galaxy-cyan);
-  --color-galaxy-purple: var(--galaxy-purple);
-
-  --breakpoint-xs: 480px;
-}
-
-/* Galaxy theme is the default — dark cosmic background with teal/cyan accents */
-:root {
-  --radius: 1.25rem;
-
-  --background: oklch(0.16 0.04 270);
-  --foreground: oklch(0.97 0.01 220);
-
-  --card: oklch(0.22 0.05 270 / 0.7);
-  --card-foreground: oklch(0.97 0.01 220);
-  --popover: oklch(0.22 0.05 270);
-  --popover-foreground: oklch(0.97 0.01 220);
-
-  --primary: oklch(0.78 0.15 195);
-  --primary-foreground: oklch(0.15 0.04 270);
-
-  --secondary: oklch(0.32 0.08 285);
-  --secondary-foreground: oklch(0.97 0.01 220);
-
-  --muted: oklch(0.26 0.04 275);
-  --muted-foreground: oklch(0.72 0.04 240);
-
-  --accent: oklch(0.7 0.18 320);
-  --accent-foreground: oklch(0.15 0.04 270);
-
-  --destructive: oklch(0.65 0.22 25);
-  --destructive-foreground: oklch(0.98 0 0);
-
-  --border: oklch(0.78 0.15 195 / 0.2);
-  --input: oklch(0.3 0.05 275);
-  --ring: oklch(0.78 0.15 195);
-
-  --galaxy-teal: oklch(0.78 0.15 195);
-  --galaxy-cyan: oklch(0.85 0.13 210);
-  --galaxy-purple: oklch(0.55 0.2 295);
-
-  --gradient-galaxy: radial-gradient(
-      ellipse at 20% 0%,
-      oklch(0.35 0.18 295 / 0.55),
-      transparent 55%
-    ),
-    radial-gradient(ellipse at 80% 10%, oklch(0.4 0.15 210 / 0.45), transparent 55%),
-    radial-gradient(ellipse at 50% 100%, oklch(0.3 0.18 270 / 0.5), transparent 60%),
-    linear-gradient(180deg, oklch(0.13 0.05 275) 0%, oklch(0.18 0.06 270) 100%);
-
-  --shadow-glow: 0 0 15px oklch(0.78 0.15 195 / 0.3);
-  --shadow-card: 0 4px 20px oklch(0.1 0.05 270 / 0.5);
-
-  --chart-1: oklch(0.78 0.15 195);
-  --chart-2: oklch(0.7 0.18 320);
-  --chart-3: oklch(0.85 0.13 210);
-  --chart-4: oklch(0.65 0.2 295);
-  --chart-5: oklch(0.78 0.18 95);
-
-  --sidebar: oklch(0.18 0.05 275);
-  --sidebar-foreground: oklch(0.97 0.01 220);
-  --sidebar-primary: oklch(0.78 0.15 195);
-  --sidebar-primary-foreground: oklch(0.15 0.04 270);
-  --sidebar-accent: oklch(0.26 0.05 275);
-  --sidebar-accent-foreground: oklch(0.97 0.01 220);
-  --sidebar-border: oklch(0.78 0.15 195 / 0.2);
-  --sidebar-ring: oklch(0.78 0.15 195);
-}
-
-.dark {
-  /* Same as :root — site is always galaxy themed */
+  --color-border: hsl(214 11% 21%);
+  
+  --color-neural-teal: hsl(191 100% 50%);
+  --color-brand-gold: hsl(40 90% 55%);
 }
 
 @layer base {
   * {
-    border-color: var(--color-border);
+    @apply border-border;
   }
-
-  html,
   body {
-    font-family: var(--font-sans);
-  }
-
-  body {
-    background: var(--gradient-galaxy);
-    background-attachment: fixed;
-    color: var(--color-foreground);
-    min-height: 100vh;
-  }
-
-  h1,
-  h2,
-  h3,
-  .font-display {
-    font-family: var(--font-display);
-    letter-spacing: 0.01em;
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-body);
   }
 }
 
 @layer utilities {
-  .galaxy-card {
-    background: oklch(0.24 0.05 275 / 0.85);
-    border: 1px solid oklch(0.78 0.15 195 / 0.25);
-    box-shadow: var(--shadow-card);
-    will-change: transform, opacity;
+  .liquid-glass {
+    background: hsla(215, 35%, 7%, 0.78);
+    backdrop-filter: blur(24px) saturate(1.5);
+    -webkit-backdrop-filter: blur(24px) saturate(1.5);
+    border: 1.5px solid hsla(214, 11%, 21%, 0.25);
+    border-radius: 20px;
+    box-shadow:
+      inset 0 1.5px 0 hsla(0, 0%, 100%, 0.14),
+      inset 0 -1px 0 hsla(0, 0%, 0%, 0.12),
+      0 0 0 0.5px hsla(0, 0%, 100%, 0.06),
+      0 12px 48px -8px hsla(0, 0%, 0%, 0.4);
+    position: relative;
   }
 
-  /* Optimized card for lists/galleries to avoid massive blur lag */
-  .lesson-card {
-    background: oklch(0.22 0.05 270 / 0.9);
-    border: 1px solid oklch(0.78 0.15 195 / 0.2);
-    box-shadow: var(--shadow-card);
-    will-change: transform;
+  .neon-text {
+    color: var(--color-neural-teal);
+    text-shadow: 0 0 10px hsla(191, 100%, 50%, 0.5),
+                 0 0 20px hsla(191, 100%, 50%, 0.3);
   }
 
-  .galaxy-glow {
-    box-shadow: var(--shadow-glow);
+  .neon-border {
+    border-color: var(--color-neural-teal);
+    box-shadow: 0 0 15px hsla(191, 100%, 50%, 0.3);
   }
 
-  .galaxy-divider {
-    background: linear-gradient(
-      180deg,
-      transparent,
-      oklch(0.78 0.15 195 / 0.6),
-      transparent
-    );
-    box-shadow: 0 0 12px oklch(0.78 0.15 195 / 0.5);
+  .glass-card {
+    @apply liquid-glass;
   }
 
-  .text-glow {
-    text-shadow: 0 0 18px oklch(0.78 0.15 195 / 0.6);
+  /* Ambient glow background */
+  .ambient-glow {
+    background: radial-gradient(ellipse at 50% 40%, hsla(174, 100%, 50%, 0.06) 0%, transparent 60%);
   }
+}
 
-  .stars-bg::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image:
-      radial-gradient(1px 1px at 10% 20%, white, transparent),
-      radial-gradient(1px 1px at 30% 70%, white, transparent),
-      radial-gradient(1.5px 1.5px at 60% 30%, white, transparent),
-      radial-gradient(1px 1px at 80% 60%, white, transparent),
-      radial-gradient(1px 1px at 90% 15%, white, transparent),
-      radial-gradient(1px 1px at 45% 85%, white, transparent),
-      radial-gradient(1.5px 1.5px at 15% 50%, white, transparent),
-      radial-gradient(1px 1px at 70% 80%, white, transparent);
-    opacity: 0.3;
-    pointer-events: none;
-    z-index: -1;
-  }
+.antigravity-scroll-lock {
+  overflow: hidden !important;
 }

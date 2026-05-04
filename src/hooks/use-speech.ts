@@ -26,8 +26,9 @@ export function useSpeech() {
 
   /**
    * Plays a specific audio file (either from cache or URL).
+   * Returns the audio object to allow event listeners.
    */
-  const playAudio = useCallback((url: string) => {
+  const playAudio = useCallback(async (url: string): Promise<HTMLAudioElement | null> => {
     // Stop any current playback
     if (audioRef.current) {
       audioRef.current.pause();
@@ -41,17 +42,28 @@ export function useSpeech() {
       audioCache.current.set(url, audio);
     }
 
-    /**
-     * CALM TONE PRESERVATION:
-     * We can still adjust the playbackRate of our custom MP3s 
-     * if we want them even slower/calmer.
-     */
     audio.playbackRate = 1.0; 
-    
     audioRef.current = audio;
-    audio.play().catch(err => {
+    
+    try {
+      await audio.play();
+      return audio;
+    } catch (err) {
       console.warn("Audio playback failed (interaction required?):", err);
-    });
+      return null;
+    }
+  }, []);
+
+  const pause = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+  }, []);
+
+  const resume = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.play().catch(console.error);
+    }
   }, []);
 
   const stop = useCallback(() => {
@@ -61,24 +73,12 @@ export function useSpeech() {
     }
   }, []);
 
-  /**
-   * FALLBACK: Web Speech API (for development or missing files)
-   */
-  const speakFallback = useCallback((text: string) => {
-    if (typeof window === "undefined" || !window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    const voices = window.speechSynthesis.getVoices();
-    utterance.voice = voices.find(v => v.name.includes('Google') || v.name.includes('Female')) || voices[0];
-    utterance.rate = 0.75;
-    utterance.pitch = 0.9;
-    window.speechSynthesis.speak(utterance);
-  }, []);
-
   return { 
     playAudio, 
     preloadAudio, 
+    pause,
+    resume,
     stop, 
-    speakFallback 
+    audio: audioRef.current
   };
 }
