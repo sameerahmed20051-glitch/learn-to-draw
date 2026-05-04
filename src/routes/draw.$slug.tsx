@@ -60,7 +60,7 @@ export const Route = createFileRoute("/draw/$slug")({
       <div className="galaxy-card rounded-3xl p-8">
         <h1 className="font-display text-3xl font-black">Lesson not found 😅</h1>
         <Link
-          to="/lessons"
+          to="/"
           className="mt-4 inline-block rounded-full bg-primary text-primary-foreground px-5 py-2 font-bold"
         >
           Back to lessons
@@ -77,7 +77,7 @@ function DrawPage() {
   const canvasRef = useRef<any>(null);
   
   // Use advanced file-based speech hook
-  const { playAudio, preloadAudio, stop, speakFallback } = useSpeech();
+  const { playAudio, preloadAudio, stop } = useSpeech();
 
   const step = lesson.steps[stepIndex];
   const isLast = stepIndex === lesson.steps.length - 1;
@@ -153,7 +153,7 @@ function DrawPage() {
 
       {/* Top bar */}
       <header className="relative flex items-center justify-between px-4 py-3 border-b border-[var(--galaxy-teal)]/20 bg-card/40 backdrop-blur">
-        <Link to="/lessons">
+        <Link to="/">
           <Button variant="secondary" size="lg" className="rounded-full font-bold">
             <HomeIcon className="mr-1 h-5 w-5" /> Lessons
           </Button>
